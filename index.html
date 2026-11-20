@@ -1603,7 +1603,8 @@ const SURFACES = [
 
 /* ---------- Retail & affiliate (edit IDs here) ---------- */
 const AFFILIATE = {
- awinPublisherId: '',            /* your Awin publisher ID, e.g. '1234567' */
+ awinPublisherId: '3161583',     /* Nabil's Awin publisher ID */
+ awinJoined: [],                /* advertiser IDs (awinmid) that have approved Nabil; links are only wrapped for these */
  amazon: { us:'', uk:'', de:'', fr:'', it:'', es:'', ca:'', au:'', in:'', jp:'' }, /* Associates tags per store, e.g. 'nabilrahman-20' */
  cjPid: ''                        /* optional CJ publisher ID */
 };
@@ -2960,7 +2961,7 @@ function buyUrl(rk, q) {
   const r = RETAILERS[rk], reg = REGIONS[S.region], enc = encodeURIComponent;
   if (r.amazon) { let u = r.search.replace('{tld}', reg.tld).replace('{q}', enc(q)); const tag = AFFILIATE.amazon[reg.amz]; if (tag) u += '&tag=' + enc(tag); return u; }
   const u = r.search.replace('{q}', enc(q));
-  if (AFFILIATE.awinPublisherId && r.awin) return `https://www.awin1.com/cread.php?awinmid=${r.awin}&awinaffid=${AFFILIATE.awinPublisherId}&ued=${enc(u)}`;
+  if (AFFILIATE.awinPublisherId && r.awin && (AFFILIATE.awinJoined || []).includes(r.awin)) return `https://www.awin1.com/cread.php?awinmid=${r.awin}&awinaffid=${AFFILIATE.awinPublisherId}&ued=${enc(u)}`;
   return u;
 }
 const MED_WORD = { oil: 'oil colour', acrylic: 'acrylic', watercolor: 'watercolour', gouache: 'gouache', ink: 'ink', softpastel: 'soft pastel', oilpastel: 'oil pastel', pencil: 'coloured pencil', tempera: 'egg tempera' };
