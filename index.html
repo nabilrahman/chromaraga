@@ -333,6 +333,17 @@ footer{font-size:13px}
 .surf{display:flex;flex-direction:column}
 label[for="safeChk"],#safeChk{flex-shrink:0}
 #grainS{min-width:0;flex:1}
+
+.buymix{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.bm-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.bm-brand{display:flex;align-items:center;gap:6px;font-size:12.5px}
+.bm-brand select{font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid var(--line2);background:var(--bg);border-radius:2px;color:var(--ink)}
+.bm-row{display:grid;grid-template-columns:16px minmax(0,1fr);gap:6px 10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.bm-row .dot{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.bm-name{display:flex;flex-direction:column;gap:2px;min-width:0;font-size:13px}
+.bm-name b{font-weight:550}
+.bm-name .faint{font-size:11.5px}
+.bm-btns{grid-column:2;display:flex;flex-wrap:wrap;gap:4px}
 </style>
 </head>
 <body>
@@ -435,6 +446,11 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
     <p class="faint notice" style="margin-top:12px">An estimate, not a guarantee: real paint varies with brand, batch and age, the surface, climate and light. Test on a scrap first. <a href="#terms">Disclaimer</a></p>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px">
      <button class="btn sm solid" id="saveMix">Save to project</button><button class="btn sm" id="shopMix">Add paints to shopping list</button><button class="btn sm" id="copyMix">Copy recipe</button><button class="btn sm" id="cardBtn">Recipe card</button><button class="btn sm" id="hearMix">Hear this colour</button>
+    </div>
+    <div class="buymix" id="buyMix" hidden>
+     <div class="bm-head"><span class="lbl">Buy these paints</span><label class="bm-brand"><span class="faint">Brand</span> <select id="buyBrand" aria-label="Preferred paint brand"></select></label></div>
+     <div id="buyRows"></div>
+     <p class="faint" style="font-size:11.5px;margin:8px 0 0" id="buyNote"></p>
     </div>
    </div>
    <div class="pane adv">
@@ -1841,6 +1857,7 @@ function updateMix() {
   $('#dryEst').innerHTML = dryEstimate(parts);
   drawResultSwatch();
   drawAdvanced(parts, rgb);
+  renderBuyMix(parts);
 }
 const fmtW = w => (Math.round(w * 100) / 100).toString();
 function dryEstimate(parts) {
@@ -2410,6 +2427,24 @@ document.addEventListener('click', e => {
   try { w = window.open(a.href, '_blank'); if (w) w.opener = null; } catch (err) { }
   if (!w) openDrawer(`<h2 class="h2">Open the shop</h2><p class="muted">This preview blocked the new tab. Copy the link and open it in your browser.</p><input readonly id="buyLink" value="${esc(a.href)}" style="width:100%;margin:10px 0"><button class="btn solid" id="buyCopy">Copy link</button>`) || ($('#buyCopy').onclick = () => { const i = $('#buyLink'); i.select(); try { navigator.clipboard.writeText(i.value); } catch (er) { document.execCommand('copy'); } toast('Link copied'); });
 });
+/* ---------- buy the paints in the current mix ---------- */
+function genericQuery(p) { return p.name.replace(/[()]/g, ' ').replace(/\b(mix|genuine)\b/gi, '').replace(/\s+/g, ' ').trim() + ' ' + (SHORT_MED[S.medium] || 'paint'); }
+function buyQueryFor(p) {
+  const k = S.buyBrand;
+  if (k && p.b && p.b[k] && brandMakes(k)) return { q: brandQuery(k, p.b[k]), brand: BRANDS[k] };
+  return { q: genericQuery(p), brand: '', fallback: !!k };
+}
+function renderBuyMix(parts) {
+  const box = $('#buyMix'); if (!box) return;
+  box.hidden = !parts.length; if (!parts.length) return;
+  const sel = $('#buyBrand'), makers = Object.keys(BRANDS).filter(brandMakes);
+  if (S.buyBrand && !makers.includes(S.buyBrand)) S.buyBrand = '';
+  sel.innerHTML = '<option value="">Any brand</option>' + makers.map(k => `<option value="${k}" ${k === S.buyBrand ? 'selected' : ''}>${esc(BRANDS[k])}</option>`).join('');
+  sel.onchange = () => { S.buyBrand = sel.value; Store.mem.prefs.buyBrand = S.buyBrand; Store.save(); renderBuyMix(partsObj()); };
+  let miss = 0;
+  $('#buyRows').innerHTML = parts.map(x => { const b = buyQueryFor(x.p); if (b.fallback) miss++; const label = b.brand ? `${esc(b.brand)} ${esc(x.p.b[S.buyBrand])}` : `any brand`; return `<div class="bm-row"><span class="dot" style="background:${x.p.hex}"></span><span class="bm-name"><b>${esc(x.p.name)}</b><span class="faint">${esc(x.p.code)}, ${label}${b.fallback ? ' (not in this brand)' : ''}</span></span><span class="bm-btns">${buyButtons(b.q, true)}</span></div>`; }).join('');
+  $('#buyNote').innerHTML = (miss ? `${miss === 1 ? 'One paint is' : miss + ' paints are'} not made by ${esc(BRANDS[S.buyBrand])} in ${esc(SHORT_MED[S.medium] || 'this medium')}, so those links search every brand. ` : '') + 'Look for the pigment code on the tube to be sure you have the same pigment. ' + DISCLOSE;
+}
 function renderShop() {
   $('#regionSel').innerHTML = Object.entries(REGIONS).map(([k, v]) => `<option value="${k}" ${k === S.region ? 'selected' : ''}>${esc(v.n)}</option>`).join('');
   $('#kits').innerHTML = KITS.map(k => `<article class="card"><h3 class="h3" style="font-size:18px;font-family:var(--disp);font-stretch:112%;font-weight:600">${esc(k.m)} starter kit</h3><table class="t"><tbody>${k.items.map(it => `<tr><td>${esc(it[0])}</td><td style="text-align:right;white-space:nowrap">${buyButtons(it[1], true)}</td></tr>`).join('')}</tbody></table></article>`).join('');
@@ -2464,7 +2499,7 @@ function copyText(t) { (navigator.clipboard ? navigator.clipboard.writeText(t) :
 
 /* ---------- INIT ---------- */
 function init() {
-  Store.load(); S.region = (Store.mem.prefs && Store.mem.prefs.region) || detectRegion();
+  Store.load(); S.region = (Store.mem.prefs && Store.mem.prefs.region) || detectRegion(); S.buyBrand = (Store.mem.prefs && Store.mem.prefs.buyBrand) || '';
   if (Store.mem.prefs && Store.mem.prefs.adv) document.body.classList.add('advanced');
   if (Store.mem.prefs && Store.mem.prefs.theme) document.body.classList.add(Store.mem.prefs.theme);
   $$('#levelSeg button').forEach(b => b.classList.toggle('on', (b.dataset.l === 'advanced') === document.body.classList.contains('advanced')));
