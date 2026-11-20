@@ -131,7 +131,7 @@ body.advanced .simple-only{display:none!important}
 .matches{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .match{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);padding:8px;border-radius:2px;cursor:pointer;background:none;text-align:left}
 .match:hover{border-color:var(--ink)}
-.match .pair{width:44px;height:44px;display:grid;grid-template-rows:1fr 1fr;border-radius:2px;overflow:hidden}
+.match .pair,.mt-card .pair{width:44px;height:44px;display:grid;grid-template-rows:1fr 1fr;border-radius:2px;overflow:hidden}.mt-card .pair i{display:block}
 /* theory */
 .wheelbox{display:grid;grid-template-columns:420px 1fr;gap:36px;align-items:center}
 #wheel{width:100%;max-width:420px;cursor:pointer}
@@ -412,6 +412,27 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
 .ct-side{padding-top:4px}
 #ctText{width:100%;box-sizing:border-box;font:inherit;font-size:13px;resize:vertical}
 @media (max-width:820px){#v-contact .kitreq{grid-template-columns:minmax(0,1fr)}}
+
+/* find a colour */
+.findbar{margin:0 0 28px;padding:18px 20px;border:1px solid var(--line2);background:var(--panel);display:flex;flex-direction:column;gap:10px}
+.fb-label{font-size:17px;font-weight:550}
+.fb-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fb-row input[type=color]{width:46px;height:40px;padding:0;border:1px solid var(--line2);background:none;cursor:pointer;flex:none}
+.fb-row .search{flex:1;min-width:220px;max-width:none;font-size:15px}
+.findbar p{margin:0;font-size:13px}
+.mt-h{margin:18px 0 8px;font-size:13px;font-weight:600}
+.mt-h:first-child{margin-top:4px}
+.mt-shop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.mt-region{display:flex;gap:6px;align-items:center;font-size:12px}.mt-region .sel,.bm-brand .sel{width:auto;padding:3px 8px;font-size:12px}
+.mt-card{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;border:1px solid var(--line);padding:10px;margin-bottom:8px;border-radius:var(--r,2px)}
+.mt-body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.mt-q{font-size:12px;margin:0}
+.mt-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.mt-rows{margin-top:6px;border-top:1px solid var(--line);padding-top:6px}
+.mt-gamut .mt-btns{margin:8px 0 4px}.mt-gamut .bm-row{margin-top:6px}
+.mt-note{font-size:11px;margin-top:10px}
+.mt-wait{font-size:13px;margin-top:12px}
+.bm-opts{display:flex;gap:10px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -437,6 +458,11 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
  <div class="hero" id="studioTop">
   <h1>Mix real colour before you touch the paint.</h1>
   <p>Choose your medium, paints and surface. Chromaraga simulates how real pigments absorb and scatter light, then tells you exactly what to mix: parts, percentages and millilitres.</p>
+ </div>
+ <div class="findbar" id="findBar">
+  <label class="fb-label" for="findIn">Looking for a particular colour?</label>
+  <div class="fb-row"><input type="color" id="findPick" value="#7b8f6a" aria-label="Pick a colour"><input id="findIn" class="search" autocomplete="off" placeholder="Sage green, burnt sienna, PB29 or #8a5a3c"><button class="btn solid" id="findGo" type="button">Find it</button><label class="btn">Use a photo<input type="file" accept="image/*" id="findPhoto" hidden></label></div>
+  <p class="faint">See how to mix it from your paints, the closest ready-made tube, and the best mix from any paints, with links to buy what you need.</p>
  </div>
  <div class="studio">
   <div class="col">
@@ -516,7 +542,7 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
      <button class="btn sm solid" id="saveMix">Save to project</button><button class="btn sm" id="shopMix">Add to my list</button><button class="btn sm" id="copyMix">Copy recipe</button><button class="btn sm" id="cardBtn">Recipe card</button><button class="btn sm" id="hearMix">Hear this colour</button>
     </div>
     <div class="buymix" id="buyMix" hidden>
-     <div class="bm-head"><span class="lbl">Buy these paints</span><label class="bm-brand"><span class="faint">Brand</span> <select id="buyBrand" aria-label="Preferred paint brand"></select></label></div>
+     <div class="bm-head"><span class="lbl">Buy these paints</span><span class="bm-opts"><label class="bm-brand"><span class="faint">Brand</span> <select id="buyBrand" aria-label="Preferred paint brand"></select></label><label class="bm-brand"><span class="faint">Shopping from</span> <span id="bmRegion"></span></label></span></div>
      <div id="buyRows"></div>
      <p class="bm-cta">Not sure which tubes to get? <a href="#shop" id="buyCta">Send these to Nabil and get the kit put together for you</a>.</p>
      <p class="faint" style="font-size:11.5px;margin:8px 0 0" id="buyNote"></p>
@@ -2241,6 +2267,8 @@ function initCctStrip() {
 /*! Chromaraga © 2026 Nabil Rahman. All rights reserved. */
 /* ===================== APP ===================== */
 const CONFIG = {
+  /* Umami website ID for visit and click counts (cloud.umami.is). Leave empty to turn analytics off. */
+  umamiId: '',
   /* Paste your Firebase web config here to enable Google sign-in and cloud sync.
      Leave apiKey empty to keep saving on this device only. */
   firebase: { apiKey: 'AIzaSyBaoOeIGtB6QDF9CVoGev8gpJL7YtCE2c8', authDomain: 'chromaraga.firebaseapp.com', projectId: 'chromaraga', storageBucket: 'chromaraga.firebasestorage.app', messagingSenderId: '629256259805', appId: '1:629256259805:web:955cd1e3b1cadaccedf334' }
@@ -2303,6 +2331,7 @@ function route() {
   $$('nav.main a, .mobnav a').forEach(a => a.classList.toggle('on', a.dataset.g === g));
   const sub = $('#subnav'); sub.innerHTML = GROUPS[g].length > 1 ? GROUPS[g].map(k => `<a href="#${k}" class="${k === h ? 'on' : ''}">${TITLES[k]}</a>`).join('') : ''; sub.style.display = GROUPS[g].length > 1 ? '' : 'none';
   document.title = (h === 'studio' ? BRAND_NAME + ': colour theory, paint mixing and pigment studio for artists' : TITLES[h] + ' · ' + BRAND_NAME);
+  trackView();
   if (h === 'sound') startField(); else stopField();
   if (h === 'light') drawScene();
   if (h === 'theory') drawWheel();
@@ -2660,16 +2689,93 @@ function bindPhoto() {
   c.addEventListener('click', e => { const [x, y] = pos(e); setTarget(samplePhoto(x, y)); });
 }
 function setTarget(rgb) { target = rgb; $('#targetSw').style.background = rgbToHex(rgb); $('#targetHex').textContent = nameOf(rgb) + ', ' + rgbToHex(rgb).toUpperCase() + ', value ' + valueOf(rgb).toFixed(1); $('#targetRow').style.display = ''; runMatch(); }
+/* ---------- FIND A COLOUR: your paints, one ready-made tube, best mix from any paints ---------- */
+let lastFind = null;
+const matchQ = d => d < 2 ? 'Near-exact' : d < 5 ? 'Very close' : d < 9 ? 'Close' : d < 14 ? 'In the same family' : 'Far off';
 function runMatch() {
   if (!target) return; $('#matches').innerHTML = '<p class="faint" style="font-size:13px">Finding the closest recipe from your paints…</p>';
   setTimeout(() => {
-    const pal = palIds().map(id => PB[id]); const opts = mixOpts();
-    const res = solve(target, pal, opts, 3).slice(0, 4);
-    $('#matches').innerHTML = res.map((r, i) => { const parts = niceParts(r.parts); const rgb = appearance(parts, opts).rgb; const q = r.d < 2 ? 'Near-exact' : r.d < 5 ? 'Very close' : r.d < 9 ? 'Close' : 'Best possible with these paints'; let tot = 0; parts.forEach(x => tot += x.w); return `<button class="match" data-use="${i}"><span class="pair"><i style="background:${rgbToHex(target)}"></i><i style="background:${rgbToHex(rgb)}"></i></span><span style="font-size:13px">${parts.map(x => `<span class="swatch-sm" style="background:${x.p.hex}"></span>${fmtW(x.w)} ${esc(x.p.name)}`).join('<br>')}<div class="faint" style="font-size:11px;margin-top:3px">${parts.map(x => Math.round(x.w / tot * 100) + '%').join(' / ')}</div></span><span class="faint" style="font-size:11px;text-align:right">${q}<br><span class="mono">ΔE ${r.d.toFixed(1)}</span></span></button>`; }).join('') + (res[0] && res[0].d > 5 ? '<div class="warn" id="gamutTip">Your paints can\'t quite reach this colour. Checking which single tube would help most…</div>' : '');
-    if (res[0] && res[0].d > 5) setTimeout(() => { const have = new Set(pal.map(p => p.id)); let best = null; PIG.filter(p => !have.has(p.id) && !(S.safe && p.tox)).forEach(p => { const r2 = solve(target, pal.concat([p]), opts, 2)[0]; if (r2 && (!best || r2.d < best.d)) best = { p, d: r2.d, r: r2 }; }); const el = $('#gamutTip'); if (!el) return; if (best && best.d < res[0].d - 1.5) { el.innerHTML = `Add one tube to reach it: <b>${esc(best.p.name)}</b> <span class="mono">(${esc(best.p.code)})</span> brings the match from ΔE ${res[0].d.toFixed(1)} to ${best.d.toFixed(1)}. <button class="btn sm" id="gtAdd">Try it</button> <button class="btn sm" id="gtShop">Add to my list</button>`; $('#gtAdd').onclick = () => { setParts(niceParts(best.r.parts)); toast('Recipe with ' + best.p.name + ' loaded'); }; $('#gtShop').onclick = () => addShopping(best.p.name + ' (' + best.p.code + ')'); } else el.textContent = 'This colour sits outside what any single extra tube can reach in this medium. The closest version will read correctly in context.'; }, 60);
-    $$('#matches [data-use]').forEach(b => b.onclick = () => { setParts(niceParts(res[+b.dataset.use].parts)); toast('Recipe loaded into the mixer'); $('#studioTop').scrollIntoView({ behavior: 'smooth' }); });
+    const t0 = target, pal = palIds().map(id => PB[id]).filter(Boolean), opts = mixOpts();
+    lastFind = { target: t0, pal, res: solve(t0, pal, opts, 3).slice(0, 3), tubes: null, any: [], gamut: null };
+    renderFind();
+    setTimeout(() => { if (target !== t0) return; findExtra(lastFind, opts); renderFind(); track('Find colour', { colour: rgbToHex(t0), best: lastFind.res[0] ? +lastFind.res[0].d.toFixed(1) : null }); }, 40);
   }, 30);
 }
+function findExtra(F, opts) {
+  const t = F.target, trans = isTransparentMedium(), buyable = PIG.filter(p => p.fam !== 'Custom' && !(S.safe && p.tox));
+  const scored = buyable.map(p => { const rgb = appearance([{ p, w: 1 }], opts).rgb, d = dE(rgb, t); let dt = d; if (!trans && PB.tiw && p !== PB.tiw) for (const w of [1, 4]) dt = Math.min(dt, dE(appearance([{ p, w: 1 }, { p: PB.tiw, w }], opts).rgb, t)); return { p, rgb, d, dt }; });
+  const [, tC, tH] = oklch(t), hueOk = rgb => { if (tC < .04) return true; const [, c, hh] = oklch(rgb); return c > tC * .45 && Math.abs(((hh - tH + 540) % 360) - 180) < 35; };
+  F.tubes = scored.filter(x => hueOk(x.rgb)).sort((a, b) => a.d - b.d).slice(0, 3);
+  const cands = scored.slice().sort((a, b) => a.dt - b.dt).slice(0, 8).map(x => x.p);
+  if (!trans && PB.tiw && !cands.includes(PB.tiw)) cands.push(PB.tiw);
+  const key = r => r.parts.map(x => x.p.id).sort().join('+'), mine = new Set(F.res.map(key));
+  const bestMine = F.res[0] ? F.res[0].d : 99;
+  F.any = solve(t, cands, opts, 3).filter(r => !mine.has(key(r)) && r.d < bestMine - 1.5).slice(0, 2);
+  if (bestMine > 5) {
+    const have = new Set(F.pal.map(p => p.id)); let best = null;
+    buyable.filter(p => !have.has(p.id)).forEach(p => { const r2 = solve(t, F.pal.concat([p]), opts, 2)[0]; if (r2 && (!best || r2.d < best.d)) best = { p, d: r2.d, r: r2 }; });
+    if (best && best.d < bestMine - 1.5) { F.gamut = best; F.any = F.any.filter(r => r.d < best.d - .5); }
+  }
+}
+function regionSelect() { return `<select class="sel regionPick" aria-label="Shopping from">${Object.entries(REGIONS).map(([k, v]) => `<option value="${k}" ${k === S.region ? 'selected' : ''}>${esc(v.n)}</option>`).join('')}</select>`; }
+function setRegion(k) { if (!REGIONS[k]) return; S.region = k; Store.mem.prefs.region = k; Store.save(); $$('.regionPick').forEach(x => x.value = k); if ($('#regionSel')) $('#regionSel').value = k; renderBuyMix(partsObj()); renderFind(); if ((location.hash || '') === '#shop') renderShop(); track('Region changed', { region: k }); }
+document.addEventListener('change', e => { if (e.target.classList && e.target.classList.contains('regionPick')) setRegion(e.target.value); });
+function buyRow(p, src, mineSet) { const b = buyQueryFor(p); return `<div class="bm-row"><span class="dot" style="background:${p.hex}"></span><span class="bm-name"><b>${esc(p.name)}</b><span class="faint">${esc(p.code)}${b.brand ? ', ' + esc(b.brand) : ''}${mineSet && mineSet.has(p.id) ? ', already in your palette' : ''}</span></span><span class="bm-btns">${buyButtons(b.q, true, null, src)}</span></div>`; }
+function renderFind() {
+  const F = lastFind, box = $('#matches'); if (!F || !box) return;
+  const th = rgbToHex(F.target), opts = mixOpts(), mine = new Set(F.pal.map(p => p.id));
+  const lines = parts => parts.map(x => `<span class="swatch-sm" style="background:${x.p.hex}"></span>${fmtW(x.w)} ${esc(x.p.name)}`).join('<br>');
+  const pct = parts => { const tot = parts.reduce((a, x) => a + x.w, 0); return parts.map(x => Math.round(x.w / tot * 100) + '%').join(' / '); };
+  const pair = rgb => `<span class="pair"><i style="background:${th}"></i><i style="background:${rgbToHex(rgb)}"></i></span>`;
+  let h = `<h5 class="mt-h">From your paints</h5><p class="faint mt-q" style="margin:-4px 0 8px">Tap a recipe to load it into the mixer. Links to buy each paint appear under the mix.</p>` + (F.res.length ? F.res.map((r, i) => { const parts = niceParts(r.parts); return `<button class="match" data-use="${i}">${pair(appearance(parts, opts).rgb)}<span style="font-size:13px">${lines(parts)}<div class="faint" style="font-size:11px;margin-top:3px">${pct(parts)}</div></span><span class="faint" style="font-size:11px;text-align:right">${matchQ(r.d)}<br><span class="mono">ΔE ${r.d.toFixed(1)}</span></span></button>`; }).join('') : '<p class="faint">Choose a palette to see recipes.</p>');
+  if (F.gamut) { const g = F.gamut; h += `<div class="warn mt-gamut">Your paints can't quite reach this colour. Add one tube: <b>${esc(g.p.name)}</b> <span class="mono">(${esc(g.p.code)})</span> brings it from ΔE ${F.res[0].d.toFixed(1)} to ${g.d.toFixed(1)}.<div class="mt-btns"><button class="btn sm" data-gtuse>Try the recipe</button><button class="btn sm" data-addp="${g.p.id}">Add to my list</button></div>${buyRow(g.p, 'find-gamut')}</div>`; }
+  if (!F.tubes) h += '<p class="faint mt-wait">Checking ready-made paints and the best mix from any paints…</p>';
+  else {
+    const near = F.tubes.filter(x => x.d < 8);
+    h += `<div class="mt-shop"><h5 class="mt-h">Ready-made in one tube</h5><label class="mt-region"><span class="faint">Shopping from</span> ${regionSelect()}</label></div>`;
+    h += near.length ? near.map(x => { const b = buyQueryFor(x.p); return `<div class="mt-card">${pair(x.rgb)}<div class="mt-body"><div><b>${esc(x.p.name)}</b> <span class="mono faint">${esc(x.p.code)}</span></div><div class="faint mt-q">${matchQ(x.d)} straight from the tube (ΔE ${x.d.toFixed(1)})${mine.has(x.p.id) ? '. Already in your palette.' : ''}</div><div class="mt-btns">${buyButtons(b.q, true, null, 'find-tube')}<button class="btn sm" data-addp="${x.p.id}">Add to my list</button></div></div></div>`; }).join('') : '<p class="faint mt-q">No single paint is close to this colour, so mixing is the way to get it.</p>';
+    if (F.any.length) h += `<h5 class="mt-h">Best mix from any paints</h5><p class="faint mt-q">Closer than your current palette can get. Buy only the tubes you don't have.</p>` + F.any.map((r, i) => { const parts = niceParts(r.parts); return `<div class="mt-card">${pair(appearance(parts, opts).rgb)}<div class="mt-body"><div style="font-size:13px">${lines(parts)}</div><div class="faint mt-q">${pct(parts)}, ${matchQ(r.d).toLowerCase()} (ΔE ${r.d.toFixed(1)})</div><div class="mt-btns"><button class="btn sm solid" data-anyuse="${i}">Use this recipe</button><button class="btn sm" data-anybuy="${i}" aria-expanded="false">Buy these paints</button><button class="btn sm" data-anylist="${i}">Add all to my list</button></div><div class="mt-rows" id="anyBuy${i}" hidden>${parts.map(x => buyRow(x.p, 'find-mix', mine)).join('')}</div></div></div>`; }).join('');
+    h += `<p class="faint mt-note">Match the pigment code on the tube to be sure you have the same paint. ${DISCLOSE}</p>`;
+  }
+  box.innerHTML = h;
+  $$('#matches [data-use]').forEach(b => b.onclick = () => { setParts(niceParts(F.res[+b.dataset.use].parts)); toast('Recipe loaded into the mixer'); $('#studioTop').scrollIntoView({ behavior: 'smooth' }); });
+  $$('#matches [data-anyuse]').forEach(b => b.onclick = () => { setParts(niceParts(F.any[+b.dataset.anyuse].parts)); toast('Recipe loaded into the mixer'); track('Use recipe', { from: 'any paints' }); $('#studioTop').scrollIntoView({ behavior: 'smooth' }); });
+  $$('#matches [data-anybuy]').forEach(b => b.onclick = () => { const el = $('#anyBuy' + b.dataset.anybuy); el.hidden = !el.hidden; b.setAttribute('aria-expanded', String(!el.hidden)); });
+  $$('#matches [data-anylist]').forEach(b => b.onclick = () => { const ps = F.any[+b.dataset.anylist].parts.map(x => x.p).filter(p => !mine.has(p.id)); addMany(ps.length ? ps : F.any[+b.dataset.anylist].parts.map(x => x.p)); track('Add to list', { from: 'find-mix', n: ps.length }); });
+  $$('#matches [data-addp]').forEach(b => b.onclick = () => { addShopping(PB[b.dataset.addp]); track('Add to list', { from: 'find', paint: PB[b.dataset.addp].code }); });
+  const gt = $('#matches [data-gtuse]'); if (gt) gt.onclick = () => { setParts(niceParts(F.gamut.r.parts)); toast('Recipe with ' + F.gamut.p.name + ' loaded'); };
+}
+/* read a colour from a hex code, an RGB triple, a colour name, a paint name or a pigment code */
+const COLOUR_MODS = { light: [.12, 1], pale: [.18, .6], pastel: [.2, .5], dark: [-.14, 1], deep: [-.12, 1.1], dusty: [-.06, .55], muted: [0, .55], greyish: [0, .45], grayish: [0, .45], soft: [.04, .7], bright: [0, 1.3], vivid: [0, 1.35], rich: [-.05, 1.2], warm: [0, 1, 60], cool: [0, 1, 250] };
+const BASIC_HUES = { red: '#c23b2e', orange: '#e2792b', yellow: '#f2c230', green: '#3f8a4f', blue: '#2f5fa8', purple: '#6b3f8f', violet: '#7a45b0', pink: '#e7a1b0', brown: '#7a5235', grey: '#8d8d8a', gray: '#8d8d8a', black: '#1c1c1c', white: '#f4f2ec', teal: '#2a7f80', turquoise: '#33b3a6', magenta: '#c0307d', beige: '#d9c8a9', cream: '#efe4c8', tan: '#c19a6b', maroon: '#6d1f2a', burgundy: '#7a2433', lavender: '#b9a7d6', lilac: '#c4a5cf', coral: '#ef7e66', peach: '#f4b89a', gold: '#c9a23a', khaki: '#b5a77a', aqua: '#6fcfc8', indigo: '#33356f', crimson: '#b0213a', scarlet: '#d8352a', ochre: '#c58b2a', rust: '#a4502b', olive: '#6b6b2f', mint: '#a6d8b8', navy: '#1d2a55', sky: '#8fbfe6', lime: '#a6c83a', charcoal: '#36383a' };
+function colourBase(low) {
+  const nm = x => x[0].toLowerCase();
+  let n = NAMES_ALL.find(x => nm(x) === low); if (n) return n[1];
+  if (BASIC_HUES[low]) return hexToRgb(BASIC_HUES[low]);
+  const pg = PIG.filter(p => p.fam !== 'Custom'), p = pg.find(x => x.name.toLowerCase() === low) || pg.find(x => (x.code || '').toLowerCase().split(/[\s,+]+/).includes(low)) || pg.find(x => x.name.toLowerCase().includes(low));
+  if (p) return p.rgb;
+  n = NAMES_ALL.find(x => nm(x).includes(low)) || NAMES_ALL.find(x => low.includes(nm(x))); if (n) return n[1];
+  const words = low.split(/\s+/).filter(w => w.length > 2); n = words.length > 1 && NAMES_ALL.find(x => words.every(w => nm(x).includes(w))); return n ? n[1] : null;
+}
+/* read a colour from a hex code, an RGB triple, a colour name, a paint name or a pigment code, with words like pale, dusty or deep */
+function parseColourInput(v) {
+  v = (v || '').trim(); if (!v) return null; const low = v.toLowerCase().replace(/\s+/g, ' ');
+  const rgbm = v.match(/^\D*(\d{1,3})[\s,;/]+(\d{1,3})[\s,;/]+(\d{1,3})\D*$/);
+  if (/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) return hexToRgb(v.startsWith('#') ? v : '#' + v);
+  if (rgbm) return rgbm.slice(1, 4).map(n => Math.min(255, +n) / 255);
+  const exact = NAMES_ALL.find(x => x[0].toLowerCase() === low); if (exact) return exact[1];
+  const words = low.split(' '), mods = words.filter(w => COLOUR_MODS[w]), rest = words.filter(w => !COLOUR_MODS[w]).join(' ').replace(/ish$/, '');
+  if (!mods.length) return colourBase(low);
+  const base = rest ? colourBase(rest) : null; if (!base) return colourBase(low);
+  let [L, C, h] = oklch(base);
+  mods.forEach(m => { const [dl, cm, hh] = COLOUR_MODS[m]; L = Math.max(.08, Math.min(.97, L + dl)); C *= cm; if (hh != null) { let d = ((hh - h + 540) % 360) - 180; h += Math.sign(d) * Math.min(Math.abs(d), 18); } });
+  return fromOklch(L, Math.max(0, C), (h + 360) % 360).map(x => Math.max(0, Math.min(1, x)));
+}
+function findColour(rgb, how) { setTarget(rgb); track('Find colour start', { how }); setTimeout(() => { const m = $('#matchPane'); if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60); }
+/* analytics: counts visits and clicks when an Umami website ID is set in CONFIG; does nothing otherwise */
+function track(name, data) { try { if (window.umami && typeof umami.track === 'function') umami.track(name, data); } catch (e) { } }
+function loadAnalytics() { if (!CONFIG.umamiId || document.getElementById('umamiJs')) return; const sc = document.createElement('script'); sc.id = 'umamiJs'; sc.defer = true; sc.src = 'https://cloud.umami.is/script.js'; sc.dataset.websiteId = CONFIG.umamiId; sc.dataset.autoTrack = 'false'; sc.onload = () => trackView(); document.head.appendChild(sc); }
+function trackView() { try { if (window.umami) umami.track(props => Object.assign({}, props, { url: '/chromaraga/' + ((location.hash || '#studio').slice(1)), title: document.title })); } catch (e) { } }
 function extractPalette() {
   const d = photo.data.data, pts = []; for (let i = 0; i < d.length; i += 4 * 37) pts.push(rgbToOklab([d[i] / 255, d[i + 1] / 255, d[i + 2] / 255]));
   let cs = []; for (let k = 0; k < 6; k++) cs.push(pts[Math.floor(k / 6 * pts.length + pts.length / 12)]);
@@ -2975,12 +3081,13 @@ const BRAND_ALIAS = { golden: { oil: 'Williamsburg', watercolor: 'QoR' } };
 const BRAND_LINE = { schmincke: { oil: 'Mussini', acrylic: 'PRIMAcryl', gouache: 'Horadam Gouache' }, wn: { acrylic: 'Professional Acrylic' } };
 function brandMakes(k) { return (BRAND_MEDIA[k] || '').split(' ').includes(S.medium); }
 function brandQuery(k, v) { const m = S.medium, makes = brandMakes(k); const name = (BRAND_ALIAS[k] || {})[m] || BRANDS[k]; const line = (BRAND_LINE[k] || {})[m]; if (line) return name + ' ' + line + ' ' + v.replace(/\b(Finest|French)\b\s*/g, '').trim(); return name + ' ' + v + (makes ? ' ' + (SHORT_MED[m] || '') : ''); }
-function buyButtons(q, small, only) { const list = only ? [only] : REGIONS[S.region].list; return list.map(rk => `<a class="btn sm buy" rel="sponsored noopener" target="_blank" href="${esc(buyUrl(rk, q))}">${esc(RETAILERS[rk].n)}</a>`).join(' '); }
+function buyButtons(q, small, only, src) { const list = only ? [only] : (REGIONS[S.region] || REGIONS.world).list; return list.map(rk => `<a class="btn sm buy" rel="sponsored noopener" target="_blank" data-rk="${rk}" data-src="${esc(src || '')}" data-q="${esc(q.slice(0, 90))}" href="${esc(buyUrl(rk, q))}">${esc(RETAILERS[rk].n)}</a>`).join(' '); }
 /* links open a new tab; where the page is sandboxed and popups are blocked, offer the link to copy */
 document.addEventListener('click', e => {
   if (e.target.closest && e.target.closest('#drawer a[href="#terms"]')) { closeDrawer(); return; }
   const a = e.target.closest && e.target.closest('a.buy'); if (!a) return;
   e.preventDefault(); let w = null;
+  track('Buy click', { shop: a.dataset.rk || '', from: a.dataset.src || 'other', item: a.dataset.q || '', region: S.region, medium: S.medium });
   try { w = window.open(a.href, '_blank'); if (w) w.opener = null; } catch (err) { }
   if (!w) openDrawer(`<h2 class="h2">Open the shop</h2><p class="muted">This preview blocked the new tab. Copy the link and open it in your browser.</p><input readonly id="buyLink" value="${esc(a.href)}" style="width:100%;margin:10px 0"><button class="btn solid" id="buyCopy">Copy link</button>`) || ($('#buyCopy').onclick = () => { const i = $('#buyLink'); i.select(); try { navigator.clipboard.writeText(i.value); } catch (er) { document.execCommand('copy'); } toast('Link copied'); });
 });
@@ -2999,7 +3106,8 @@ function renderBuyMix(parts) {
   sel.innerHTML = '<option value="">Any brand</option>' + makers.map(k => `<option value="${k}" ${k === S.buyBrand ? 'selected' : ''}>${esc(BRANDS[k])}</option>`).join('');
   sel.onchange = () => { S.buyBrand = sel.value; Store.mem.prefs.buyBrand = S.buyBrand; Store.save(); renderBuyMix(partsObj()); };
   let miss = 0;
-  $('#buyRows').innerHTML = parts.map(x => { const b = buyQueryFor(x.p); if (b.fallback) miss++; const label = b.brand ? `${esc(b.brand)} ${esc(x.p.b[S.buyBrand])}` : `any brand`; return `<div class="bm-row"><span class="dot" style="background:${x.p.hex}"></span><span class="bm-name"><b>${esc(x.p.name)}</b><span class="faint">${esc(x.p.code)}, ${label}${b.fallback ? ' (not in this brand)' : ''}</span></span><span class="bm-btns">${buyButtons(b.q, true)}</span></div>`; }).join('');
+  const rg = $('#bmRegion'); if (rg) rg.innerHTML = regionSelect();
+  $('#buyRows').innerHTML = parts.map(x => { const b = buyQueryFor(x.p); if (b.fallback) miss++; const label = b.brand ? `${esc(b.brand)} ${esc(x.p.b[S.buyBrand])}` : `any brand`; return `<div class="bm-row"><span class="dot" style="background:${x.p.hex}"></span><span class="bm-name"><b>${esc(x.p.name)}</b><span class="faint">${esc(x.p.code)}, ${label}${b.fallback ? ' (not in this brand)' : ''}</span></span><span class="bm-btns">${buyButtons(b.q, true, null, 'mix')}</span></div>`; }).join('');
   $('#buyNote').innerHTML = (miss ? `${miss === 1 ? 'One paint is' : miss + ' paints are'} not made by ${esc(BRANDS[S.buyBrand])} in ${esc(SHORT_MED[S.medium] || 'this medium')}, so those links search every brand. ` : '') + 'Look for the pigment code on the tube to be sure you have the same pigment. ' + DISCLOSE;
   $('#buyCta').onclick = e => { e.preventDefault(); addMany(partsObj().map(x => x.p)); location.hash = '#shop'; setTimeout(() => { const k = $('#kitReq'); if (k) k.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 250); };
 }
@@ -3067,6 +3175,7 @@ function initContact() {
       clearTimeout(tm); const j = await r.json().catch(() => ({})); ok = r.ok && String(j.success) === 'true';
     } catch (er) { ok = false; }
     btn.disabled = false; btn.textContent = 'Send message';
+    track('Contact', { topic, sent: ok });
     if (ok) { $('#ctSentTo').textContent = email; show('ctSent'); f.reset(); return; }
     const body = `${message}\n\n${name}\n${email}\n\nSent from Chromaraga (nabilrahman.com/chromaraga).`;
     $('#ctText').value = body;
@@ -3091,7 +3200,7 @@ function initKitForm() {
     const mail = `mailto:${KIT_EMAIL}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
     $('#kitText').value = body; $('#kitMail').href = mail;
     $('#kitGmail').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${KIT_EMAIL}&su=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
-    f.hidden = true; $('#kitDone').hidden = false;
+    f.hidden = true; $('#kitDone').hidden = false; track('Kit request', { items: listTotal() });
     const a = document.createElement('a'); a.href = mail; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
   };
   $('#kitCopy').onclick = () => { const t = $('#kitText'); t.select(); try { navigator.clipboard.writeText(t.value); } catch (er) { document.execCommand('copy'); } toast('Request copied'); };
@@ -3208,7 +3317,11 @@ function init() {
   $('#photoBox').addEventListener('dragover', e => e.preventDefault()); $('#photoBox').addEventListener('drop', e => { e.preventDefault(); const f = e.dataTransfer.files[0]; f && loadPhoto(f); });
   $('#viewSeg').onclick = e => { const b = e.target.closest('button'); if (!b) return; photoView = b.dataset.v; $$('#viewSeg button').forEach(x => x.classList.toggle('on', x === b)); drawPhoto(); };
   $('#pickTarget').oninput = e => setTarget(hexToRgb(e.target.value));
-  $('#hexTarget').onchange = e => { let v = e.target.value.trim(); const rgbm = v.match(/^\D*(\d{1,3})[\s,;/]+(\d{1,3})[\s,;/]+(\d{1,3})\D*$/); if (/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) { if (!v.startsWith('#')) v = '#' + v; } else if (rgbm) v = rgbToHex(rgbm.slice(1, 4).map(n => Math.min(255, +n) / 255)); if (!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) { const n = NAMES.find(x => x[0].toLowerCase() === e.target.value.trim().toLowerCase()); if (!n) return toast('Type a hex code like #8a5a3c, an RGB value, or a colour name'); v = n[1]; } setTarget(hexToRgb(v)); };
+  $('#hexTarget').onchange = e => { const rgb = parseColourInput(e.target.value); if (!rgb) return toast('Type a hex code like #8a5a3c, an RGB value, a colour name or a paint name'); setTarget(rgb); };
+  const fGo = () => { const rgb = parseColourInput($('#findIn').value); if (!rgb) return toast('Try a colour name like sage green, a paint like burnt sienna, or a hex code'); $('#findPick').value = rgbToHex(rgb); findColour(rgb, 'typed'); };
+  $('#findGo').onclick = fGo; $('#findIn').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); fGo(); } };
+  $('#findPick').onchange = e => findColour(hexToRgb(e.target.value), 'picker');
+  $('#findPhoto').onchange = e => { const f = e.target.files[0]; if (!f) return; loadPhoto(f); track('Find colour start', { how: 'photo' }); setTimeout(() => $('#matchPane').scrollIntoView({ behavior: 'smooth', block: 'start' }), 120); };
   $('#camIn').onchange = e => e.target.files[0] && loadPhoto(e.target.files[0]);
   $('#compSw').onclick = () => matchHex($('#compSw').dataset.hex);
   $('#planBtn').onclick = paintingPlan;
@@ -3239,8 +3352,8 @@ function init() {
   $('#glossSearch').oninput = e => { const q = e.target.value.toLowerCase(); $$('#glossList [data-term]').forEach(c => c.style.display = c.textContent.toLowerCase().includes(q) ? '' : 'none'); };
   $('#paintSearch').oninput = filterPaints; $('#famChips').onclick = e => { const b = e.target.closest('[data-fam]'); if (!b || b.tagName !== 'BUTTON') return; $$('#famChips .chip').forEach(c => c.classList.toggle('on', c === b)); filterPaints(); };
   $('#lessonChips').onclick = e => { const b = e.target.closest('[data-lv]'); if (!b) return; $$('#lessonChips .chip').forEach(c => c.classList.toggle('on', c === b)); $$('#lessonGrid .card').forEach(c => c.style.display = !b.dataset.lv || c.dataset.lvl === b.dataset.lv ? '' : 'none'); };
-  initKitForm(); initRoom(); initContact();
-  $('#regionSel').onchange = e => { S.region = e.target.value; Store.mem.prefs.region = S.region; Store.save(); renderShop(); };
+  initKitForm(); initRoom(); initContact(); loadAnalytics();
+  $('#regionSel').onchange = e => setRegion(e.target.value);
   $('#newProj').onclick = newProject;
   /* embed build ships empty containers: render content at runtime */
   const fillIf = (sel, fn) => { const el = $(sel); if (el && !el.innerHTML.trim()) el.innerHTML = fn(); };
