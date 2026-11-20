@@ -344,6 +344,30 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
 .bm-name b{font-weight:550}
 .bm-name .faint{font-size:11.5px}
 .bm-btns{grid-column:2;display:flex;flex-wrap:wrap;gap:4px}
+.list-head{display:flex;align-items:baseline;gap:12px}
+.li-row{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.li-row .dot{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.li-name{display:flex;flex-direction:column;gap:2px;min-width:0}.li-name b{font-weight:550}.li-name .faint{font-size:12px}
+.li-qty{display:flex;align-items:center;gap:8px}.li-qty b{min-width:18px;text-align:center;font:500 13px var(--mono)}
+.li-qty button{width:24px;height:24px;border-radius:50%;border:1px solid var(--line2);background:none;cursor:pointer;line-height:1;padding:0;color:var(--ink)}
+.li-btns{grid-column:2/4;display:flex;flex-wrap:wrap;gap:4px}
+.list-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.kitreq{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start}
+.kr-steps{margin:14px 0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:var(--ink2)}
+.kr-price{margin:16px 0 0;padding:12px 14px;border:1px solid var(--line2);background:var(--panel)}
+.kr-form,.kr-done{display:flex;flex-direction:column;gap:12px;background:var(--panel);border:1px solid var(--line);padding:20px}
+.kr-form label{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.kr-form .search,.kr-form .sel,.kr-done textarea{width:100%;box-sizing:border-box;font:inherit;font-size:14px}
+.kr-form textarea,.kr-done textarea{resize:vertical;min-height:60px}
+.kr-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kr-check{flex-direction:row!important;align-items:center}
+.kr-err{margin:0;color:#9a2b1d;font-size:13px}
+.kr-btns{display:flex;flex-wrap:wrap;gap:6px}
+.bm-cta{margin:10px 0 0;font-size:13px}
+@media (max-width:820px){.kitreq{grid-template-columns:minmax(0,1fr)}.kr-two{grid-template-columns:1fr}.li-row{grid-template-columns:16px minmax(0,1fr)}.li-qty{grid-column:2}}
+[hidden]{display:none!important}
+.kr-form .search,.kr-form .sel,.kr-done textarea{max-width:none}
+#shopList,.list-actions{max-width:860px}
 </style>
 </head>
 <body>
@@ -445,11 +469,12 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
     <div id="warnings"></div>
     <p class="faint notice" style="margin-top:12px">An estimate, not a guarantee: real paint varies with brand, batch and age, the surface, climate and light. Test on a scrap first. <a href="#terms">Disclaimer</a></p>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px">
-     <button class="btn sm solid" id="saveMix">Save to project</button><button class="btn sm" id="shopMix">Add paints to shopping list</button><button class="btn sm" id="copyMix">Copy recipe</button><button class="btn sm" id="cardBtn">Recipe card</button><button class="btn sm" id="hearMix">Hear this colour</button>
+     <button class="btn sm solid" id="saveMix">Save to project</button><button class="btn sm" id="shopMix">Add to my list</button><button class="btn sm" id="copyMix">Copy recipe</button><button class="btn sm" id="cardBtn">Recipe card</button><button class="btn sm" id="hearMix">Hear this colour</button>
     </div>
     <div class="buymix" id="buyMix" hidden>
      <div class="bm-head"><span class="lbl">Buy these paints</span><label class="bm-brand"><span class="faint">Brand</span> <select id="buyBrand" aria-label="Preferred paint brand"></select></label></div>
      <div id="buyRows"></div>
+     <p class="bm-cta">Not sure which tubes to get? <a href="#shop" id="buyCta">Send these to Nabil and get the kit put together for you</a>.</p>
      <p class="faint" style="font-size:11.5px;margin:8px 0 0" id="buyNote"></p>
     </div>
    </div>
@@ -638,11 +663,40 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
 
 <!-- ================= SHOP ================= -->
 <section class="view" id="v-shop">
- <div class="hero"><h1>Get exactly what you need.</h1><p>Starter kits for every medium and your own shopping list, linked to trusted art stores in your region.</p></div>
+ <div class="hero"><h1>Your paint list.</h1><p>Collect the paints you tried in the studio. Buy them yourself from trusted art stores, or send the list to Nabil and have the whole kit put together and posted to you.</p></div>
  <div class="toolbar" style="margin-bottom:28px"><span class="lbl">Shopping from</span><select class="sel" id="regionSel" style="width:auto" aria-label="Region"></select></div>
- <div class="block"><h2 class="h2">Your shopping list</h2><div id="shopList"></div></div>
+ <div class="block"><div class="list-head"><h2 class="h2">My list</h2><span class="faint" id="listCount"></span></div><div id="shopList"></div><div class="list-actions" id="listActions"></div></div>
+ <div class="block kitreq" id="kitReq">
+  <div class="kr-intro">
+   <h2 class="h2">Not sure what to buy? Let Nabil put your kit together.</h2>
+   <p>Send your list, or simply say what you want to paint. Nabil checks the pigments, picks brands and tube sizes that suit your budget, then buys the paints and posts the kit to you.</p>
+   <ol class="kr-steps"><li>Send your request with the form.</li><li>Nabil replies by email with a quote and any questions.</li><li>Once you approve and pay, your kit is put together and posted.</li></ol>
+   <p class="kr-price"><b>Curation from $25</b>, plus the paints and shipping. Larger or more complex palettes cost more. You see the full quote before you pay anything.</p>
+  </div>
+  <form class="kr-form" id="kitForm" novalidate>
+   <label>Your name<input class="search" name="name" autocomplete="name" required></label>
+   <label>Email<input class="search" name="email" type="email" autocomplete="email" required></label>
+   <label>Where should the kit go? <span class="faint">City and country</span><input class="search" name="where" autocomplete="address-level2" required></label>
+   <div class="kr-two">
+    <label>Budget for paints<select class="sel" name="budget"><option>Not sure yet</option><option>Under $50</option><option>$50 to $100</option><option>$100 to $200</option><option>Over $200</option></select></label>
+    <label>Experience<select class="sel" name="level"><option>Beginner</option><option>Some experience</option><option>Professional</option></select></label>
+   </div>
+   <label>What do you want to paint? <span class="faint">Optional</span><textarea class="search" name="aim" rows="3" placeholder="Landscapes in oil, botanical watercolours, portraits…"></textarea></label>
+   <label>Anything else? <span class="faint">Optional</span><textarea class="search" name="notes" rows="2" placeholder="Paints you already own, allergies, a deadline…"></textarea></label>
+   <label class="kr-check"><input type="checkbox" name="withList" checked> <span id="withListLbl">Include my list</span></label>
+   <p class="kr-err" id="kitErr" role="alert" hidden></p>
+   <button class="btn solid" type="submit">Send my kit request</button>
+   <p class="faint" style="font-size:12px;margin:0">This opens your email with the request ready to send to nabilrahman.rubab@gmail.com. Nothing you type is stored on this site.</p>
+  </form>
+  <div class="kr-done" id="kitDone" hidden>
+   <h3 class="h3">Your request is ready to send.</h3>
+   <p class="muted">Your email app should have opened with it. If it didn’t, send it with Gmail or copy it into any email to nabilrahman.rubab@gmail.com.</p>
+   <div class="kr-btns"><a class="btn solid" id="kitMail" href="#">Open in my email app</a><a class="btn" id="kitGmail" href="#" target="_blank" rel="noopener">Open in Gmail</a><button class="btn" id="kitCopy" type="button">Copy request</button><button class="btn" id="kitEdit" type="button">Edit request</button></div>
+   <textarea class="search" id="kitText" rows="9" readonly aria-label="Your kit request"></textarea>
+  </div>
+ </div>
  <div class="block"><h2 class="h2">Starter kits</h2><div class="grid g3" id="kits"></div></div>
- <p class="faint notice">Chromaraga does not sell any product. Purchases are made with independent retailers, who are responsible for the product, price, delivery and returns; we are not responsible for items bought through these links. Some links are affiliate links: we may earn a small commission at no extra cost to you. As an Amazon Associate I earn from qualifying purchases. <a href="#terms">Full disclaimer</a></p>
+ <p class="faint notice">Store links go to independent retailers, who are responsible for the product, price, delivery and returns; we are not responsible for items bought through these links. Kits that Nabil puts together on request are agreed with you directly by email before you pay. Some links are affiliate links: we may earn a small commission at no extra cost to you. As an Amazon Associate I earn from qualifying purchases. <a href="#terms">Full disclaimer</a></p>
 </section>
 
 <!-- ================= PROJECTS ================= -->
@@ -674,9 +728,11 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
   <p>Safety notes on pigments and materials are general information only. Always follow the manufacturer’s label and safety data sheet, ventilate your space, and take extra care around children, pets and pregnancy. We are not responsible for injury, illness or damage from the use or handling of any material.</p>
 
   <h2 class="h2">Products and shop links</h2>
-  <p>Chromaraga does not make, sell, ship or stock any product. Shop links take you to independent retailers such as Blick, Jackson’s Art, Cass Art and Amazon. Any purchase is between you and that retailer, under their terms, prices, delivery, return and warranty policies.</p>
+  <p>Apart from kits that Nabil Rahman puts together on request, Chromaraga does not make, sell, ship or stock any product. Shop links take you to independent retailers such as Blick, Jackson’s Art, Cass Art and Amazon. Any purchase is between you and that retailer, under their terms, prices, delivery, return and warranty policies.</p>
   <p>We are not responsible for the products you buy through our links, including their quality, safety, accuracy of description, availability, price, delivery or suitability for your work. Please direct any questions, complaints or refunds to the retailer or manufacturer. Product names, codes and prices change; check the retailer’s listing before you buy.</p>
   <p>Some links are affiliate links: we may earn a small commission at no extra cost to you. This does not change the price you pay. Chromaraga takes part in affiliate programmes run by Awin and by Amazon. As an Amazon Associate I earn from qualifying purchases.</p>
+  <h2 class="h2">Kit requests</h2>
+  <p>If you ask Nabil Rahman to put a kit together, your request is sent from your own email account to him and is used only to prepare your quote and your order. It is not stored on this site. The price, payment, delivery and any returns for a kit are agreed with you by email before you pay. The paints in a kit are made by their manufacturers, whose labels and safety information apply.</p>
 
   <h2 class="h2">No warranty and limitation of liability</h2>
   <p>Chromaraga and everything on it, including recipes, colour data, drying times, safety notes, cultural and historical information and links, is provided “as is” and “as available”, without warranties of any kind, express or implied, including accuracy, completeness, fitness for a particular purpose or uninterrupted availability.</p>
@@ -1453,12 +1509,12 @@ const REGIONS = {
  world:{n:'Rest of world', list:['jacksonsUK','amazon'], tld:'com', amz:'us'}
 };
 const KITS = [
- {m:'Watercolor', items:[['Artist watercolor set (split primary)','artist watercolor paint set'],['100% cotton cold-press paper, 300 gsm','cold press watercolor paper 300gsm cotton'],['Round brushes 4, 8, 12','watercolor round brush set'],['Porcelain or mixing palette','watercolor mixing palette'],['Masking tape and board','artist tape drawing board']]},
+ {m:'Watercolour', items:[['Artist watercolor set (split primary)','artist watercolor paint set'],['100% cotton cold-press paper, 300 gsm','cold press watercolor paper 300gsm cotton'],['Round brushes 4, 8, 12','watercolor round brush set'],['Porcelain or mixing palette','watercolor mixing palette'],['Masking tape and board','artist tape drawing board']]},
  {m:'Oil', items:[['Oil paints: split primary + earths + titanium white','artist oil paint set'],['Odourless mineral spirits','odorless mineral spirits gamsol'],['Refined linseed oil','refined linseed oil painting'],['Hog bristle brushes, filberts','hog bristle filbert brush set'],['Primed cotton or linen canvas','primed linen canvas panel'],['Palette knife','palette knife painting']]},
  {m:'Acrylic', items:[['Heavy body acrylics: split primary','heavy body acrylic paint set'],['Gloss or matte medium','acrylic matte medium'],['Synthetic brushes','synthetic acrylic brush set'],['Stay-wet palette','stay wet palette acrylic'],['Canvas boards','canvas panels']]},
  {m:'Gouache', items:[['Gouache set','artist gouache set'],['Mixed-media or watercolor paper','mixed media paper pad'],['Flat and round synthetic brushes','gouache brush set']]},
  {m:'Soft pastel', items:[['Soft pastel set (half sticks)','soft pastel set'],['Sanded pastel paper','sanded pastel paper'],['Toned pastel paper','mi-teintes pastel paper'],['Workable fixative','workable fixative']]},
- {m:'Colored pencil', items:[['Artist colored pencils','artist colored pencils set'],['Smooth bristol paper','bristol board smooth'],['Colourless blender','colorless blender pencil']]}
+ {m:'Coloured pencil', items:[['Artist colored pencils','artist colored pencils set'],['Smooth bristol paper','bristol board smooth'],['Colourless blender','colorless blender pencil']]}
 ];
 
 ;
@@ -1740,7 +1796,7 @@ const uid = () => Math.random().toString(36).slice(2, 10);
 
 /* ---------- routing ---------- */
 const GROUPS = { about: ['terms'], studio: ['studio'], learn: ['theory', 'perception', 'course', 'mediums', 'problems', 'lessons', 'glossary'], explore: ['sound', 'culture', 'artists', 'light'], paints: ['paints', 'shop'], projects: ['projects'] };
-const TITLES = { terms: 'Disclaimer and terms', studio: 'Studio', theory: 'Theory', perception: 'Perception', mediums: 'Mediums', problems: 'Problems', lessons: 'Lessons', course: 'Course', glossary: 'Glossary', sound: 'Colour & sound', culture: 'Culture & spirit', artists: 'Artists', light: 'Light & mood', paints: 'Pigments', shop: 'Shop', projects: 'Projects' };
+const TITLES = { terms: 'Disclaimer and terms', studio: 'Studio', theory: 'Theory', perception: 'Perception', mediums: 'Mediums', problems: 'Problems', lessons: 'Lessons', course: 'Course', glossary: 'Glossary', sound: 'Colour & sound', culture: 'Culture & spirit', artists: 'Artists', light: 'Light & mood', paints: 'Pigments', shop: 'My list', projects: 'Projects' };
 function route() {
   let h = (location.hash || '#studio').slice(1); if (!TITLES[h]) h = 'studio';
   const g = Object.keys(GROUPS).find(k => GROUPS[k].includes(h));
@@ -2109,7 +2165,7 @@ function runMatch() {
     const pal = palIds().map(id => PB[id]); const opts = mixOpts();
     const res = solve(target, pal, opts, 3).slice(0, 4);
     $('#matches').innerHTML = res.map((r, i) => { const parts = niceParts(r.parts); const rgb = appearance(parts, opts).rgb; const q = r.d < 2 ? 'Near-exact' : r.d < 5 ? 'Very close' : r.d < 9 ? 'Close' : 'Best possible with these paints'; let tot = 0; parts.forEach(x => tot += x.w); return `<button class="match" data-use="${i}"><span class="pair"><i style="background:${rgbToHex(target)}"></i><i style="background:${rgbToHex(rgb)}"></i></span><span style="font-size:13px">${parts.map(x => `<span class="swatch-sm" style="background:${x.p.hex}"></span>${fmtW(x.w)} ${esc(x.p.name)}`).join('<br>')}<div class="faint" style="font-size:11px;margin-top:3px">${parts.map(x => Math.round(x.w / tot * 100) + '%').join(' / ')}</div></span><span class="faint" style="font-size:11px;text-align:right">${q}<br><span class="mono">ΔE ${r.d.toFixed(1)}</span></span></button>`; }).join('') + (res[0] && res[0].d > 5 ? '<div class="warn" id="gamutTip">Your paints can\'t quite reach this colour. Checking which single tube would help most…</div>' : '');
-    if (res[0] && res[0].d > 5) setTimeout(() => { const have = new Set(pal.map(p => p.id)); let best = null; PIG.filter(p => !have.has(p.id) && !(S.safe && p.tox)).forEach(p => { const r2 = solve(target, pal.concat([p]), opts, 2)[0]; if (r2 && (!best || r2.d < best.d)) best = { p, d: r2.d, r: r2 }; }); const el = $('#gamutTip'); if (!el) return; if (best && best.d < res[0].d - 1.5) { el.innerHTML = `Add one tube to reach it: <b>${esc(best.p.name)}</b> <span class="mono">(${esc(best.p.code)})</span> brings the match from ΔE ${res[0].d.toFixed(1)} to ${best.d.toFixed(1)}. <button class="btn sm" id="gtAdd">Try it</button> <button class="btn sm" id="gtShop">Add to shopping list</button>`; $('#gtAdd').onclick = () => { setParts(niceParts(best.r.parts)); toast('Recipe with ' + best.p.name + ' loaded'); }; $('#gtShop').onclick = () => addShopping(best.p.name + ' (' + best.p.code + ')'); } else el.textContent = 'This colour sits outside what any single extra tube can reach in this medium. The closest version will read correctly in context.'; }, 60);
+    if (res[0] && res[0].d > 5) setTimeout(() => { const have = new Set(pal.map(p => p.id)); let best = null; PIG.filter(p => !have.has(p.id) && !(S.safe && p.tox)).forEach(p => { const r2 = solve(target, pal.concat([p]), opts, 2)[0]; if (r2 && (!best || r2.d < best.d)) best = { p, d: r2.d, r: r2 }; }); const el = $('#gamutTip'); if (!el) return; if (best && best.d < res[0].d - 1.5) { el.innerHTML = `Add one tube to reach it: <b>${esc(best.p.name)}</b> <span class="mono">(${esc(best.p.code)})</span> brings the match from ΔE ${res[0].d.toFixed(1)} to ${best.d.toFixed(1)}. <button class="btn sm" id="gtAdd">Try it</button> <button class="btn sm" id="gtShop">Add to my list</button>`; $('#gtAdd').onclick = () => { setParts(niceParts(best.r.parts)); toast('Recipe with ' + best.p.name + ' loaded'); }; $('#gtShop').onclick = () => addShopping(best.p.name + ' (' + best.p.code + ')'); } else el.textContent = 'This colour sits outside what any single extra tube can reach in this medium. The closest version will read correctly in context.'; }, 60);
     $$('#matches [data-use]').forEach(b => b.onclick = () => { setParts(niceParts(res[+b.dataset.use].parts)); toast('Recipe loaded into the mixer'); $('#studioTop').scrollIntoView({ behavior: 'smooth' }); });
   }, 30);
 }
@@ -2137,11 +2193,11 @@ function paintingPlan() {
   const pal = palIds().map(id => PB[id]), opts = mixOpts(), area = (+$('#canvasW')?.value || 40) * (+$('#canvasH')?.value || 50), cover = ['watercolor', 'ink'].includes(S.medium) ? 400 : ['oil', 'acrylic'].includes(S.medium) ? 70 : 120, tot = W * H;
   const rows = cs.map((q, j) => { const rgb = oklabToRgb(q).map(v => clamp(v, 0, 1)); const r = solve(rgb, pal, opts, 3)[0]; const parts = niceParts(r.parts); const pct = cnt[j] / tot * 100, ml = Math.max(.5, area * pct / 100 / cover * 1.3); let t2 = 0; parts.forEach(x => t2 += x.w); return { j, rgb, parts, pct, ml, d: r.d, t2 }; });
   PLAN = rows;
-  openDrawer(`<div class="lbl">Painting plan for ${esc(MEDIA[S.medium].name.toLowerCase())}</div><h2 class="h2" style="margin:6px 0 10px">${n} colours, in painting order</h2><p class="muted" style="font-size:13px;margin:0 0 10px">${light2dark ? 'Watercolor works light to dark: start with step 1 and keep the lights.' : 'Opaque media work dark to light: block in the darks first, finish with the lights.'} Quantities are estimates for one layer.</p><div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:12px;flex-wrap:wrap">Colours <input id="planN" type="number" value="${n}" min="3" max="16" style="width:56px"> Canvas <input id="canvasW" type="number" value="${$('#canvasW')?.value || 40}" style="width:56px">×<input id="canvasH" type="number" value="${$('#canvasH')?.value || 50}" style="width:56px"> cm <button class="btn sm" id="planRe">Update</button></div><img src="${c.toDataURL('image/jpeg', .85)}" style="width:100%;border-radius:2px;display:block" alt="Simplified colour map with numbered areas"><table class="t" style="margin-top:12px"><tbody>${rows.map(r => `<tr><td style="width:34px"><b class="mono">${r.j + 1}</b></td><td style="width:40px"><span class="swatch-sm" style="width:28px;height:28px;border-radius:2px;background:${rgbToHex(r.rgb)}"></span></td><td style="font-size:12.5px">${r.parts.map(x => `${fmtW(x.w)} ${esc(x.p.name)}`).join(' + ')}<div class="faint" style="font-size:11px">${r.parts.map(x => Math.round(x.w / r.t2 * 100) + '%').join(' / ')}. Covers ${r.pct.toFixed(0)}% of the image, about ${r.ml.toFixed(1)} ml</div></td><td><button class="btn sm" data-planuse="${r.j}">Mix</button></td></tr>`).join('')}</tbody></table><div style="display:flex;gap:8px;margin-top:12px"><button class="btn sm solid" id="planSave">Save plan to project</button><button class="btn sm" id="planShop">Add all paints to shopping list</button></div>`);
+  openDrawer(`<div class="lbl">Painting plan for ${esc(MEDIA[S.medium].name.toLowerCase())}</div><h2 class="h2" style="margin:6px 0 10px">${n} colours, in painting order</h2><p class="muted" style="font-size:13px;margin:0 0 10px">${light2dark ? 'Watercolor works light to dark: start with step 1 and keep the lights.' : 'Opaque media work dark to light: block in the darks first, finish with the lights.'} Quantities are estimates for one layer.</p><div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:12px;flex-wrap:wrap">Colours <input id="planN" type="number" value="${n}" min="3" max="16" style="width:56px"> Canvas <input id="canvasW" type="number" value="${$('#canvasW')?.value || 40}" style="width:56px">×<input id="canvasH" type="number" value="${$('#canvasH')?.value || 50}" style="width:56px"> cm <button class="btn sm" id="planRe">Update</button></div><img src="${c.toDataURL('image/jpeg', .85)}" style="width:100%;border-radius:2px;display:block" alt="Simplified colour map with numbered areas"><table class="t" style="margin-top:12px"><tbody>${rows.map(r => `<tr><td style="width:34px"><b class="mono">${r.j + 1}</b></td><td style="width:40px"><span class="swatch-sm" style="width:28px;height:28px;border-radius:2px;background:${rgbToHex(r.rgb)}"></span></td><td style="font-size:12.5px">${r.parts.map(x => `${fmtW(x.w)} ${esc(x.p.name)}`).join(' + ')}<div class="faint" style="font-size:11px">${r.parts.map(x => Math.round(x.w / r.t2 * 100) + '%').join(' / ')}. Covers ${r.pct.toFixed(0)}% of the image, about ${r.ml.toFixed(1)} ml</div></td><td><button class="btn sm" data-planuse="${r.j}">Mix</button></td></tr>`).join('')}</tbody></table><div style="display:flex;gap:8px;margin-top:12px"><button class="btn sm solid" id="planSave">Save plan to project</button><button class="btn sm" id="planShop">Add all paints to my list</button></div>`);
   $('#planRe').onclick = paintingPlan;
   $$('[data-planuse]').forEach(b => b.onclick = () => { const r = rows.find(x => x.j === +b.dataset.planuse); setParts(r.parts); closeDrawer(); toast('Step ' + (r.j + 1) + ' loaded into the mixer'); });
   $('#planSave').onclick = () => { saveItems([{ type: 'image', src: c.toDataURL('image/jpeg', .8), name: 'Painting plan' }].concat(rows.map(r => ({ type: 'swatch', hex: rgbToHex(r.rgb), name: 'Step ' + (r.j + 1), medium: S.medium, recipe: r.parts.map(x => [x.p.id, x.w]) })))); };
-  $('#planShop').onclick = () => { new Set(rows.flatMap(r => r.parts.map(x => x.p))).forEach(p => addShopping(p.name + ' (' + p.code + ')')); };
+  $('#planShop').onclick = () => { addMany([...new Set(rows.flatMap(r => r.parts.map(x => x.p)))]); };
 }
 let PLAN = null;
 function recipeCard() {
@@ -2380,8 +2436,8 @@ function drawScene() {
 function pigDetail(id) {
   const p = PB[id], W2 = [0.97, 0.965, 0.95];
   const mass = rgbToHex(appearance([{ p, w: 1 }], { medium: 'oil', dry: true, surfaceRGB: W2 }).rgb), tint = rgbToHex(appearance([{ p, w: 1 }, { p: PB.tiw, w: 4 }], { medium: 'oil', dry: true, surfaceRGB: W2 }).rgb), wash = rgbToHex(appearance([{ p, w: 1 }], { medium: 'watercolor', dilution: .6, dry: true, surfaceRGB: W2 }).rgb), glaze = rgbToHex(appearance([{ p, w: 1 }], { medium: 'oil', dilution: .85, dry: true, surfaceRGB: W2 }).rgb);
-  openDrawer(`<div class="lbl">${esc(p.fam)}, ${esc(p.code)}</div><h2 class="h2" style="margin:6px 0 16px">${esc(p.name)}</h2><div class="grid g4" style="gap:6px">${[['Masstone', mass], ['Tint 1:4', tint], ['Glaze', glaze], ['Wash', wash]].map(s => `<div><div style="height:70px;background:${s[1]};border-radius:2px"></div><span class="faint" style="font-size:11px">${s[0]}</span></div>`).join('')}</div><p class="muted" style="margin:18px 0">${esc(p.note)}</p><table class="t"><tbody><tr><td>Transparency</td><td>${esc(p.tr)}</td></tr><tr><td>Bias</td><td>${esc(p.bias)}</td></tr><tr><td>Tinting strength</td><td>${p.str > 1.8 ? 'Very high' : p.str > 1.1 ? 'High' : p.str > .7 ? 'Medium' : 'Low'}</td></tr><tr><td>Staining</td><td>${['None', 'Low', 'Medium', 'High'][p.st]}</td></tr><tr><td>Granulating</td><td>${p.gr ? 'Yes' : 'No'}</td></tr><tr><td>Lightfastness</td><td>${esc(p.lf)}</td></tr><tr><td>Safety</td><td>${p.tox ? esc(p.tox) : 'Standard studio care'}</td></tr></tbody></table><div class="lbl" style="margin:20px 0 6px">Sold as</div><table class="t"><tbody>${Object.entries(p.b).map(([k, v]) => `<tr><td>${esc(BRANDS[k])}</td><td class="muted">${esc(v)}</td><td style="text-align:right">${brandMakes(k) ? buyButtons(brandQuery(k, v), true) : `<span class="faint" style="font-size:12px">Not made in ${esc(SHORT_MED[S.medium] || 'this medium')}</span>`}</td></tr>`).join('')}</tbody></table><p class="faint" style="font-size:11px;margin-top:10px">Names vary by line and country; match the pigment code ${esc(p.code)} on the label. ${DISCLOSE}</p><div style="display:flex;gap:8px;margin-top:16px"><button class="btn solid" id="pdAdd">Add to mix</button><button class="btn" id="pdList">Add to shopping list</button></div>`);
-  $('#pdAdd').onclick = () => { addPart(id); closeDrawer(); location.hash = '#studio'; }; $('#pdList').onclick = () => addShopping(p.name + ' (' + p.code + ')');
+  openDrawer(`<div class="lbl">${esc(p.fam)}, ${esc(p.code)}</div><h2 class="h2" style="margin:6px 0 16px">${esc(p.name)}</h2><div class="grid g4" style="gap:6px">${[['Masstone', mass], ['Tint 1:4', tint], ['Glaze', glaze], ['Wash', wash]].map(s => `<div><div style="height:70px;background:${s[1]};border-radius:2px"></div><span class="faint" style="font-size:11px">${s[0]}</span></div>`).join('')}</div><p class="muted" style="margin:18px 0">${esc(p.note)}</p><table class="t"><tbody><tr><td>Transparency</td><td>${esc(p.tr)}</td></tr><tr><td>Bias</td><td>${esc(p.bias)}</td></tr><tr><td>Tinting strength</td><td>${p.str > 1.8 ? 'Very high' : p.str > 1.1 ? 'High' : p.str > .7 ? 'Medium' : 'Low'}</td></tr><tr><td>Staining</td><td>${['None', 'Low', 'Medium', 'High'][p.st]}</td></tr><tr><td>Granulating</td><td>${p.gr ? 'Yes' : 'No'}</td></tr><tr><td>Lightfastness</td><td>${esc(p.lf)}</td></tr><tr><td>Safety</td><td>${p.tox ? esc(p.tox) : 'Standard studio care'}</td></tr></tbody></table><div class="lbl" style="margin:20px 0 6px">Sold as</div><table class="t"><tbody>${Object.entries(p.b).map(([k, v]) => `<tr><td>${esc(BRANDS[k])}</td><td class="muted">${esc(v)}</td><td style="text-align:right">${brandMakes(k) ? buyButtons(brandQuery(k, v), true) : `<span class="faint" style="font-size:12px">Not made in ${esc(SHORT_MED[S.medium] || 'this medium')}</span>`}</td></tr>`).join('')}</tbody></table><p class="faint" style="font-size:11px;margin-top:10px">Names vary by line and country; match the pigment code ${esc(p.code)} on the label. ${DISCLOSE}</p><div style="display:flex;gap:8px;margin-top:16px"><button class="btn solid" id="pdAdd">Add to mix</button><button class="btn" id="pdList">Add to my list</button></div>`);
+  $('#pdAdd').onclick = () => { addPart(id); closeDrawer(); location.hash = '#studio'; }; $('#pdList').onclick = () => addShopping(p);
 }
 
 /* ---------- SHOP / AFFILIATE ---------- */
@@ -2444,15 +2500,68 @@ function renderBuyMix(parts) {
   let miss = 0;
   $('#buyRows').innerHTML = parts.map(x => { const b = buyQueryFor(x.p); if (b.fallback) miss++; const label = b.brand ? `${esc(b.brand)} ${esc(x.p.b[S.buyBrand])}` : `any brand`; return `<div class="bm-row"><span class="dot" style="background:${x.p.hex}"></span><span class="bm-name"><b>${esc(x.p.name)}</b><span class="faint">${esc(x.p.code)}, ${label}${b.fallback ? ' (not in this brand)' : ''}</span></span><span class="bm-btns">${buyButtons(b.q, true)}</span></div>`; }).join('');
   $('#buyNote').innerHTML = (miss ? `${miss === 1 ? 'One paint is' : miss + ' paints are'} not made by ${esc(BRANDS[S.buyBrand])} in ${esc(SHORT_MED[S.medium] || 'this medium')}, so those links search every brand. ` : '') + 'Look for the pigment code on the tube to be sure you have the same pigment. ' + DISCLOSE;
+  $('#buyCta').onclick = e => { e.preventDefault(); addMany(partsObj().map(x => x.p)); location.hash = '#shop'; setTimeout(() => { const k = $('#kitReq'); if (k) k.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 250); };
+}
+const KIT_EMAIL = 'nabilrahman.rubab@gmail.com';
+function shopItems() {
+  const L = Store.mem.shopping || (Store.mem.shopping = []);
+  for (let i = 0; i < L.length; i++) if (typeof L[i] === 'string') { const nm = L[i].replace(/\s*\([^)]*\)\s*$/, '').trim(), p = PIG.find(x => x.name === nm); L[i] = p ? { pid: p.id, name: p.name, code: p.code, medium: S.medium, qty: 1 } : { name: L[i], code: '', medium: '', qty: 1 }; }
+  return L;
+}
+function listTotal() { return shopItems().reduce((a, x) => a + (x.qty || 1), 0); }
+function addShopping(item, quiet) {
+  const L = shopItems(), p = typeof item === 'string' ? null : item;
+  const ex = L.find(x => p ? x.pid === p.id && x.medium === S.medium : x.name === item);
+  if (!ex) L.push(p ? { pid: p.id, name: p.name, code: p.code, medium: S.medium, qty: 1 } : { name: item, code: '', medium: '', qty: 1 });
+  Store.save(); if (!quiet) toast(ex ? 'Already on My list' : `Added to My list (${listTotal()} in total)`); return !ex;
+}
+function addMany(list) { let n = 0; list.forEach(x => { if (addShopping(x, true)) n++; }); toast(n ? `Added ${n} to My list (${listTotal()} in total)` : 'Those are already on My list'); }
+function itemQuery(it) {
+  const p = it.pid && PIG.find(x => x.id === it.pid); if (!p) return it.name;
+  const m0 = S.medium; S.medium = it.medium || m0; const r = buyQueryFor(p); S.medium = m0; return r.q;
+}
+function listText() {
+  return shopItems().map(it => `- ${it.qty || 1} × ${it.name}${it.code ? ' (' + it.code + ')' : ''}${it.medium ? ', ' + (MEDIA[it.medium] ? MEDIA[it.medium].name.toLowerCase() : it.medium) : ''}`).join('\n');
 }
 function renderShop() {
   $('#regionSel').innerHTML = Object.entries(REGIONS).map(([k, v]) => `<option value="${k}" ${k === S.region ? 'selected' : ''}>${esc(v.n)}</option>`).join('');
-  $('#kits').innerHTML = KITS.map(k => `<article class="card"><h3 class="h3" style="font-size:18px;font-family:var(--disp);font-stretch:112%;font-weight:600">${esc(k.m)} starter kit</h3><table class="t"><tbody>${k.items.map(it => `<tr><td>${esc(it[0])}</td><td style="text-align:right;white-space:nowrap">${buyButtons(it[1], true)}</td></tr>`).join('')}</tbody></table></article>`).join('');
-  const L = Store.mem.shopping;
-  $('#shopList').innerHTML = L.length ? '<table class="t"><tbody>' + L.map((it, i) => `<tr><td>${esc(it)}</td><td style="text-align:right;white-space:nowrap">${buyButtons(it.replace(/\(.*\)/, '').trim() + ' ' + (SHORT_MED[S.medium] || 'paint'), true)} <button class="btn sm" data-rmshop="${i}">Remove</button></td></tr>`).join('') + '</tbody></table>' : '<p class="faint">Your shopping list is empty. Add paints from any recipe in the Studio or from the Pigments page.</p>';
+  $('#kits').innerHTML = KITS.map((k, ki) => `<article class="card"><h3 class="h3" style="font-size:18px;font-family:var(--disp);font-stretch:112%;font-weight:600">${esc(k.m)} starter kit</h3><table class="t"><tbody>${k.items.map(it => `<tr><td>${esc(it[0])}</td><td style="text-align:right;white-space:nowrap">${buyButtons(it[1], true)}</td></tr>`).join('')}</tbody></table><button class="btn sm" data-addkit="${ki}" style="margin-top:10px">Add this kit to My list</button></article>`).join('');
+  $$('[data-addkit]').forEach(b => b.onclick = () => { addMany(KITS[+b.dataset.addkit].items.map(it => it[0])); renderShop(); });
+  const L = shopItems(), n = listTotal();
+  $('#listCount').textContent = L.length ? `${n} ${n === 1 ? 'item' : 'items'}` : '';
+  $('#shopList').innerHTML = L.length ? L.map((it, i) => { const p = it.pid && PIG.find(x => x.id === it.pid); return `<div class="li-row"><span class="dot" style="background:${p ? p.hex : 'var(--line2)'}"></span><span class="li-name"><b>${esc(it.name)}</b><span class="faint">${[it.code, it.medium && MEDIA[it.medium] ? MEDIA[it.medium].name.toLowerCase() : ''].filter(Boolean).map(esc).join(', ')}</span></span><span class="li-qty" aria-label="Quantity"><button data-qty="${i}" data-d="-1" aria-label="One fewer">–</button><b>${it.qty || 1}</b><button data-qty="${i}" data-d="1" aria-label="One more">+</button></span><span class="li-btns">${buyButtons(itemQuery(it), true)}<button class="btn sm" data-rmshop="${i}">Remove</button></span></div>`; }).join('') : '<p class="faint">Your list is empty. Add paints from any mix with “Add to my list”, from a pigment’s page, or add a starter kit below. You can also send a kit request without a list.</p>';
+  $('#listActions').innerHTML = L.length ? '<button class="btn sm" id="listCopy">Copy list</button><button class="btn sm" id="listClear">Clear list</button><a class="btn sm solid" href="#kitReq" id="listKit">Have Nabil put this kit together</a>' : '';
   $$('[data-rmshop]').forEach(b => b.onclick = () => { L.splice(+b.dataset.rmshop, 1); Store.save(); renderShop(); });
+  $$('[data-qty]').forEach(b => b.onclick = () => { const it = L[+b.dataset.qty]; it.qty = Math.max(1, (it.qty || 1) + (+b.dataset.d)); Store.save(); renderShop(); });
+  if (L.length) {
+    $('#listCopy').onclick = () => { try { navigator.clipboard.writeText(listText()); toast('List copied'); } catch (e) { toast('Copy failed'); } };
+    $('#listClear').onclick = e => { const b = e.currentTarget; if (b.dataset.sure) { L.length = 0; Store.save(); renderShop(); toast('List cleared'); } else { b.dataset.sure = 1; b.textContent = 'Tap again to clear'; } };
+    $('#listKit').onclick = e => { e.preventDefault(); $('#kitReq').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  }
+  const wl = $('#withListLbl'); if (wl) { wl.textContent = L.length ? `Include my list (${n} ${n === 1 ? 'item' : 'items'})` : 'Include my list (empty for now)'; }
 }
-function addShopping(name) { if (!Store.mem.shopping.includes(name)) Store.mem.shopping.push(name); Store.save(); toast('Added to your shopping list'); }
+function kitRequestText(f) {
+  const v = k => (f.elements[k].value || '').trim();
+  return `Chromaraga kit request\n\nName: ${v('name')}\nEmail: ${v('email')}\nKit goes to: ${v('where')}\nBudget for paints: ${v('budget')}\nExperience: ${v('level')}\n` + (v('aim') ? `What I want to paint: ${v('aim')}\n` : '') + (f.elements.withList.checked && shopItems().length ? `\nMy list (${listTotal()} items):\n${listText()}\n` : '\nNo list yet. Please suggest what I need.\n') + (v('notes') ? `\nNotes: ${v('notes')}\n` : '') + `\nSent from Chromaraga (nabilrahman.com/chromaraga).`;
+}
+function initKitForm() {
+  const f = $('#kitForm'); if (!f) return;
+  f.onsubmit = e => {
+    e.preventDefault();
+    const name = f.elements.name.value.trim(), email = f.elements.email.value.trim(), where = f.elements.where.value.trim(), err = $('#kitErr');
+    const miss = [!name && 'your name', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && 'a valid email', !where && 'where the kit should go'].filter(Boolean);
+    if (miss.length) { err.textContent = 'Please add ' + miss.join(', ') + '.'; err.hidden = false; return; }
+    err.hidden = true;
+    const body = kitRequestText(f), subj = `Kit request from ${name}`;
+    const mail = `mailto:${KIT_EMAIL}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+    $('#kitText').value = body; $('#kitMail').href = mail;
+    $('#kitGmail').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${KIT_EMAIL}&su=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+    f.hidden = true; $('#kitDone').hidden = false;
+    const a = document.createElement('a'); a.href = mail; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
+  };
+  $('#kitCopy').onclick = () => { const t = $('#kitText'); t.select(); try { navigator.clipboard.writeText(t.value); } catch (er) { document.execCommand('copy'); } toast('Request copied'); };
+  $('#kitEdit').onclick = () => { f.hidden = false; $('#kitDone').hidden = true; };
+}
 
 /* ---------- PROJECTS ---------- */
 function ensureProject() { const m = Store.mem; if (!m.projects.length) { m.projects.push({ id: uid(), name: 'My studio', t: Date.now(), pages: [{ id: uid(), name: 'Saved colours', items: [] }] }); m.active = m.projects[0].id; } let p = m.projects.find(x => x.id === m.active) || m.projects[0]; m.active = p.id; if (!p.pages.length) p.pages.push({ id: uid(), name: 'Page 1', items: [] }); if (!p.pageActive || !p.pages.find(x => x.id === p.pageActive)) p.pageActive = p.pages[0].id; return p; }
@@ -2556,7 +2665,7 @@ function init() {
   $('#resetMix').onclick = () => { S.parts = []; updateMix(); };
   $('#surfCol').oninput = e => { S.surfCol = e.target.value; clearTimeout(window._sc); window._sc = setTimeout(() => { buildSurface(); updateMix(); }, 120); };
   $('#grainS').oninput = e => { S.grain = +e.target.value / 100; clearTimeout(window._gs); window._gs = setTimeout(buildSurface, 120); };
-  $('#saveMix').onclick = saveCurrentMix; $('#shopMix').onclick = () => { partsObj().forEach(x => addShopping(x.p.name + ' (' + x.p.code + ')')); };
+  $('#saveMix').onclick = saveCurrentMix; $('#shopMix').onclick = () => { const ps = partsObj(); if (!ps.length) return toast('Mix something first'); addMany(ps.map(x => x.p)); };
   $('#copyMix').onclick = () => { const parts = partsObj(); let tot = 0; parts.forEach(x => tot += x.w); copyText(`${nameOf(currentMix())} ${rgbToHex(currentMix())}, ${MEDIA[S.medium].name}\n` + parts.map(x => `${fmtW(x.w)} part, ${Math.round(x.w / tot * 100)}%, ${(S.batch * x.w / tot).toFixed(1)} ml  ${x.p.name} (${x.p.code})`).join('\n')); };
   $('#hearMix').onclick = () => hearColor(currentMix());
   $('#chartBtn').onclick = openChart;
@@ -2595,6 +2704,7 @@ function init() {
   $('#glossSearch').oninput = e => { const q = e.target.value.toLowerCase(); $$('#glossList [data-term]').forEach(c => c.style.display = c.textContent.toLowerCase().includes(q) ? '' : 'none'); };
   $('#paintSearch').oninput = filterPaints; $('#famChips').onclick = e => { const b = e.target.closest('[data-fam]'); if (!b || b.tagName !== 'BUTTON') return; $$('#famChips .chip').forEach(c => c.classList.toggle('on', c === b)); filterPaints(); };
   $('#lessonChips').onclick = e => { const b = e.target.closest('[data-lv]'); if (!b) return; $$('#lessonChips .chip').forEach(c => c.classList.toggle('on', c === b)); $$('#lessonGrid .card').forEach(c => c.style.display = !b.dataset.lv || c.dataset.lvl === b.dataset.lv ? '' : 'none'); };
+  initKitForm();
   $('#regionSel').onchange = e => { S.region = e.target.value; Store.mem.prefs.region = S.region; Store.save(); renderShop(); };
   $('#newProj').onclick = newProject;
   /* embed build ships empty containers: render content at runtime */
