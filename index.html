@@ -433,6 +433,23 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
 .mt-note{font-size:11px;margin-top:10px}
 .mt-wait{font-size:13px;margin-top:12px}
 .bm-opts{display:flex;gap:10px;flex-wrap:wrap}
+
+/* sound stage: full screen and keyboard */
+.soundstage:fullscreen,.soundstage:-webkit-full-screen{width:100%;height:100%;border-radius:0}
+.soundstage.stage-max{position:fixed;inset:0;z-index:400;height:auto;border-radius:0}
+body.stage-lock{overflow:hidden}
+.soundstage:fullscreen .stagehead h3,.soundstage.stage-max .stagehead h3{font-size:clamp(38px,5vw,64px)}
+.soundstage:fullscreen .stagehead p,.soundstage.stage-max .stagehead p{font-size:15px;max-width:520px}
+.soundstage:fullscreen .ring,.soundstage.stage-max .ring{bottom:clamp(22px,5vh,56px);gap:14px}
+.soundstage:fullscreen .note,.soundstage.stage-max .note{width:clamp(74px,7.5vw,104px);height:clamp(96px,11vw,136px)}
+.soundstage:fullscreen .note b,.soundstage.stage-max .note b{font-size:clamp(20px,2.2vw,30px)}
+.soundstage:fullscreen .droneStrip,.soundstage.stage-max .droneStrip{bottom:clamp(140px,21vh,220px)}
+.note{position:relative}
+.nk{position:absolute;bottom:5px;right:6px;font:600 10px/1 var(--mono,ui-monospace,monospace);padding:2px 4px;border-radius:3px;border:1px solid rgba(255,255,255,.28);color:rgba(255,255,255,.8);background:rgba(0,0,0,.3)}
+.octchip{align-self:center;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:2px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.28);backdrop-filter:blur(6px);font-size:12px;color:#fff}
+.octchip kbd,.kbd-hint kbd{font:600 11px/1 var(--mono,ui-monospace,monospace);padding:3px 5px;border-radius:3px;border:1px solid currentColor;opacity:.85}
+.kbd-hint{font-size:13px;margin:12px 0 0;color:var(--ink2)}
+@media (hover:none),(pointer:coarse){.nk,.octchip,.kbd-hint{display:none}}
 </style>
 </head>
 <body>
@@ -677,10 +694,11 @@ label[for="safeChk"],#safeChk{flex-shrink:0}
  <div class="soundstage">
   <canvas id="field"></canvas>
   <div class="stagehead"><div><h3 id="nowNote">Sa</h3><p id="ragaInfo"></p></div>
-   <div class="stagectl"><button class="btn" id="droneBtn">Start drone</button><button class="btn" id="ambBtn">Play raga</button><select class="sel" id="ragaSel" style="width:auto" aria-label="Raga"></select><select class="sel" id="mapSel" style="width:auto" aria-label="Colour mapping"><option value="swara">Classical swara colours</option><option value="light">Light as an octave</option><option value="scriabin">Scriabin's keyboard</option></select><select class="sel" id="saSel" style="width:auto" aria-label="Sa pitch"><option value="130.81">Sa = C</option><option value="138.59">Sa = C♯</option><option value="146.83">Sa = D</option><option value="155.56">Sa = D♯</option><option value="164.81">Sa = E</option><option value="110">Sa = A (low)</option></select><label class="range" style="margin:0;color:#fff;font-size:12px;width:160px">Density <input type="range" id="densS" min="0" max="100" value="45"></label></div></div>
+   <div class="stagectl"><button class="btn" id="fsBtn" type="button" aria-pressed="false">Full screen</button><button class="btn" id="droneBtn">Start drone</button><button class="btn" id="ambBtn">Play raga</button><select class="sel" id="ragaSel" style="width:auto" aria-label="Raga"></select><select class="sel" id="mapSel" style="width:auto" aria-label="Colour mapping"><option value="swara">Classical swara colours</option><option value="light">Light as an octave</option><option value="scriabin">Scriabin's keyboard</option></select><select class="sel" id="saSel" style="width:auto" aria-label="Sa pitch"><option value="130.81">Sa = C</option><option value="138.59">Sa = C♯</option><option value="146.83">Sa = D</option><option value="155.56">Sa = D♯</option><option value="164.81">Sa = E</option><option value="110">Sa = A (low)</option></select><label class="range" style="margin:0;color:#fff;font-size:12px;width:160px">Density <input type="range" id="densS" min="0" max="100" value="45"></label></div></div>
   <div class="droneStrip" id="droneStrip" aria-live="off"></div>
   <div class="ring" id="ring"></div>
  </div>
+ <p class="kbd-hint">Play from your keyboard: <kbd>A</kbd> to <kbd>K</kbd> play the notes of the raga from Sa up to the next Sa, and <kbd>L</kbd> <kbd>;</kbd> <kbd>'</kbd> go on higher. <kbd>Z</kbd> and <kbd>X</kbd> move down or up an octave.</p>
  <p class="faint" id="mapNote" style="font-size:13px;margin:12px 0 30px"></p>
  <div class="block grid g2" style="gap:40px">
   <div><h2 class="h2">The seven swaras</h2><p class="lede">Indian music theory associates each note with a colour and an animal, the creature whose call the note is said to echo. Texts differ in the details.</p><table class="t"><tbody id="swaraTable"></tbody></table></div>
@@ -2335,7 +2353,7 @@ function route() {
   const sub = $('#subnav'); sub.innerHTML = GROUPS[g].length > 1 ? GROUPS[g].map(k => `<a href="#${k}" class="${k === h ? 'on' : ''}">${TITLES[k]}</a>`).join('') : ''; sub.style.display = GROUPS[g].length > 1 ? '' : 'none';
   document.title = (h === 'studio' ? BRAND_NAME + ': colour theory, paint mixing and pigment studio for artists' : TITLES[h] + ' · ' + BRAND_NAME);
   trackView();
-  if (h === 'sound') startField(); else stopField();
+  if (h === 'sound') startField(); else { stopField(); if ($('.soundstage.stage-max')) setStageFull(false); }
   if (h === 'light') drawScene();
   if (h === 'theory') drawWheel();
   if (h === 'perception') drawCones();
@@ -2942,7 +2960,8 @@ function initPerception() {
 const AFTER = '<div style="height:100%;display:grid;grid-template-columns:1fr 1fr 1fr"><i style="background:#13a3a0"></i><i style="background:#f1f0ea;position:relative"></i><i style="background:#2b3fd6"></i></div><span style="position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#111"></span>';
 
 /* ---------- SOUND ---------- */
-const SND = { ctx: null, master: null, verb: null, drone: false, droneT: null, amb: false, ambT: null, sa: 130.81, map: 'swara', raga: 'yaman', blobs: [], raf: null };
+const SND = { ctx: null, master: null, verb: null, drone: false, droneT: null, amb: false, ambT: null, sa: 130.81, map: 'swara', raga: 'yaman', blobs: [], raf: null, kOct: 0 };
+const PLAY_KEYS = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'"];
 function audio() {
   if (SND.ctx) { if (SND.ctx.state === 'suspended') SND.ctx.resume(); return SND.ctx; }
   const AC = window.AudioContext || window.webkitAudioContext; if (!AC) { toast('Audio not supported in this browser'); return null; }
@@ -3007,10 +3026,35 @@ function ambientStep() {
 function toggleAmbient() { if (!audio()) return; SND.amb = !SND.amb; $('#ambBtn').textContent = SND.amb ? 'Stop raga' : 'Play raga'; if (SND.amb) { if (!SND.drone) toggleDrone(); ambientStep(); } else clearTimeout(SND.ambT); }
 function renderNotes() {
   const r = RAGAS[SND.raga].notes;
-  $('#ring').innerHTML = r.map(s => { const c = rgbToHex(noteColor(s)); return `<button class="note" data-semi="${s}"><i style="background:${SND.map === 'swara' && s === 11 ? 'conic-gradient(#e3241f,#f4e23a,#3ea94a,#3b52d6,#b47fd6,#e3241f)' : c}"></i><b>${noteLabel(s).replace('komal ', '').replace('tivra ', '')}</b><small>${s === 1 || s === 3 || s === 8 || s === 10 ? 'komal' : s === 6 ? 'tivra' : '&nbsp;'}</small></button>`; }).join('') + `<button class="note" data-semi="12"><i style="background:${rgbToHex(noteColor(0))}"></i><b>Sa'</b><small>&nbsp;</small></button>`;
+  const kb = i => PLAY_KEYS[i] ? `<kbd class="nk" aria-hidden="true">${PLAY_KEYS[i].toUpperCase()}</kbd>` : '';
+  $('#ring').innerHTML = r.map((s, i) => { const c = rgbToHex(noteColor(s)); return `<button class="note" data-semi="${s}" aria-label="${noteLabel(s)}${PLAY_KEYS[i] ? ', key ' + PLAY_KEYS[i].toUpperCase() : ''}">${kb(i)}<i style="background:${SND.map === 'swara' && s === 11 ? 'conic-gradient(#e3241f,#f4e23a,#3ea94a,#3b52d6,#b47fd6,#e3241f)' : c}"></i><b>${noteLabel(s).replace('komal ', '').replace('tivra ', '')}</b><small>${s === 1 || s === 3 || s === 8 || s === 10 ? 'komal' : s === 6 ? 'tivra' : '&nbsp;'}</small></button>`; }).join('') + `<button class="note" data-semi="12" aria-label="Upper Sa${PLAY_KEYS[r.length] ? ', key ' + PLAY_KEYS[r.length].toUpperCase() : ''}">${kb(r.length)}<i style="background:${rgbToHex(noteColor(0))}"></i><b>Sa'</b><small>&nbsp;</small></button><div class="octchip" aria-live="polite"><kbd>Z</kbd><span id="octLabel">${octName()}</span><kbd>X</kbd></div>`;
   $$('#ring .note').forEach(b => b.onclick = () => { const s = +b.dataset.semi; playNote(s % 12, s >= 12 ? 1 : 0); });
   const R = RAGAS[SND.raga]; $('#ragaInfo').textContent = `Raga ${R.n}, played in the ${R.time.toLowerCase()}. ${R.mood}.`;
 }
+function octName() { return SND.kOct > 0 ? 'Octave up' : SND.kOct < 0 ? 'Octave down' : 'Middle octave'; }
+function keyNote(i) { const r = RAGAS[SND.raga].notes, n = r.length; playNote(r[i % n], Math.floor(i / n) + SND.kOct, 2.4); }
+document.addEventListener('keydown', e => {
+  if ((location.hash || '#studio') !== '#sound' || e.metaKey || e.ctrlKey || e.altKey) return;
+  const t = e.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  const k = e.key.toLowerCase();
+  if (k === 'escape' && $('.soundstage.stage-max')) { setStageFull(false); return; }
+  if (k === 'z' || k === 'x') { e.preventDefault(); SND.kOct = clamp(SND.kOct + (k === 'x' ? 1 : -1), -1, 1); const o = $('#octLabel'); if (o) o.textContent = octName(); return; }
+  const i = PLAY_KEYS.indexOf(k); if (i < 0) return;
+  e.preventDefault(); if (e.repeat) return; keyNote(i);
+  if (!SND.keyed) { SND.keyed = true; track('Sound keyboard', { raga: SND.raga }); }
+});
+/* full screen for the sound stage; falls back to filling the window where the browser or the embedding page blocks it */
+function stageIsFull() { return !!(document.fullscreenElement || document.webkitFullscreenElement || $('.soundstage.stage-max')); }
+function syncFsBtn() { const b = $('#fsBtn'); if (!b) return; const on = stageIsFull(); b.textContent = on ? 'Exit full screen' : 'Full screen'; b.setAttribute('aria-pressed', String(on)); }
+function setStageFull(on) {
+  const st = $('.soundstage'); if (!st) return;
+  if (!on) { if (document.fullscreenElement || document.webkitFullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document); st.classList.remove('stage-max'); document.body.classList.remove('stage-lock'); syncFsBtn(); return; }
+  const req = st.requestFullscreen || st.webkitRequestFullscreen, fallback = () => { st.classList.add('stage-max'); document.body.classList.add('stage-lock'); syncFsBtn(); };
+  if (!req) return fallback();
+  try { const p = req.call(st); if (p && p.then) p.then(syncFsBtn, fallback); else syncFsBtn(); } catch (er) { fallback(); }
+  track('Sound full screen');
+}
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, syncFsBtn));
 function startField() {
   const c = $('#field'); if (!c) return; const x = c.getContext('2d');
   const loop = t => { const W = c.width = c.clientWidth, H = c.height = c.clientHeight; x.fillStyle = '#0b0b0d'; x.fillRect(0, 0, W, H); x.globalCompositeOperation = 'lighter'; const now = performance.now();
@@ -3342,6 +3386,7 @@ function init() {
   $('#ragaSel').onchange = e => { SND.raga = e.target.value; SND.pos = 0; renderNotes(); renderDroneStrip(); };
   $('#mapSel').onchange = e => { SND.map = e.target.value; renderNotes(); renderDroneStrip(); $('#mapNote').textContent = MAPNOTE[SND.map]; };
   $('#saSel').onchange = e => { SND.sa = +e.target.value; renderNotes(); renderDroneStrip(); };
+  $('#fsBtn').onclick = () => setStageFull(!stageIsFull());
   $('#droneBtn').onclick = toggleDrone; renderDroneStrip(); $('#ambBtn').onclick = toggleAmbient; $('#mapNote').textContent = MAPNOTE.swara;
   renderNotes();
   $('#swaraTable').innerHTML = SWARAS.map(s => `<tr data-semi="${s.semi}"><td><span class="swatch-sm" style="width:18px;height:18px;background:${s.hex === 'grad' ? 'conic-gradient(#e3241f,#f4e23a,#3ea94a,#3b52d6,#b47fd6,#e3241f)' : s.hex}"></span></td><td><b style="font-weight:500">${s.s}</b> <span class="faint">${s.full}</span></td><td>${esc(s.col)}</td><td class="muted">${esc(s.animal)}</td></tr>`).join('');
