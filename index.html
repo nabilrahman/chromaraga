@@ -470,14 +470,92 @@ body.stage-lock{overflow:hidden}
 #csText{width:100%;box-sizing:border-box;font:inherit;font-size:13px;resize:vertical}
 @media (max-width:820px){.cs-two{grid-template-columns:1fr}#v-consult .kitreq{grid-template-columns:minmax(0,1fr)}}
 #csForm .rs-check{flex-direction:row;align-items:flex-start;justify-content:flex-start;text-align:left;gap:10px;font-size:13.5px}#csForm .rs-check input{margin-top:3px;flex:none}
+/* ---------- Find a colour (home) ---------- */
+.ask{padding:clamp(28px,6vw,64px) 0 28px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.ask h1{font-size:clamp(36px,6.2vw,80px);line-height:.98;font-weight:650;font-stretch:88%;letter-spacing:-.025em;margin:0 0 26px;max-width:13ch}
+.ask-row{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch;max-width:860px}
+.ask-row input[type=color]{width:58px;height:54px;padding:0;border:1px solid var(--line2);border-radius:var(--r);background:none;cursor:pointer;flex:none}
+.ask-row .search{flex:1;min-width:220px;max-width:none;font-size:18px;height:54px;padding:0 16px}
+.ask-row .btn{font-size:16px;padding:0 24px;height:54px;justify-content:center}
+.ask-opts{display:flex;gap:12px 28px;flex-wrap:wrap;align-items:center;margin:16px 0 0;font-size:14px}
+.ask-med{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ask-photo{cursor:pointer;text-decoration:underline;text-underline-offset:3px;color:var(--ink2)}
+.ask-photo:hover{color:var(--ink)}
+.ask-photo:focus-within{outline:2px solid var(--ink);outline-offset:2px}
+.ask-pop{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.ask-pop .chip{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-size:13.5px;padding:6px 12px}
+.ask-pop .chip .swatch-sm{width:14px;height:14px;border-radius:50%}
+.answer{margin:0 0 36px;scroll-margin-top:72px}
+.an-sw{border-radius:var(--r);min-height:clamp(170px,28vh,280px);display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:22px 24px;flex-wrap:wrap}
+.an-sw p{margin:0;font-size:14px;opacity:.85}
+.an-sw h2{margin:2px 0 6px;font-size:clamp(34px,5.4vw,68px);line-height:1;font-weight:650;font-stretch:88%;letter-spacing:-.02em}
+.an-sw .an-hex{font-variant-numeric:tabular-nums}
+.an-share{background:rgba(255,255,255,.75)!important;color:#232323!important;border-color:transparent!important}
+.an-wait{margin:16px 0}
+.an-note{font-size:17px;line-height:1.5;max-width:62ch;margin:20px 0 6px}
+.an-region{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0;font-size:14px}
+.an-region .sel{width:auto}
+.an-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:16px}
+.an-col,.an-extra{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.an-col h3{font-size:16px;font-weight:600;margin:0 0 14px}
+.an-extra{margin-top:16px}
+.an-extra h4{font-size:15px;font-weight:600;margin:0 0 4px}
+.an-extra>p{margin:0 0 12px;font-size:14px}
+.an-tube{display:grid;grid-template-columns:60px minmax(0,1fr);gap:14px;align-items:start}
+.an-tube p{margin:0}
+.an-tube.alt{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.an-q{font-size:14px;margin:4px 0 12px}
+.pair.big{display:grid;grid-template-rows:1fr 1fr;width:60px;height:60px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line2)}
+.pair.big i{display:block;width:auto;height:auto;border-radius:0;margin:0}
+.bigbuy{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.bigbuy .buy{font-size:15px!important;padding:10px 18px!important}
+.bigbuy .buy:first-child{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.bigbuy.alt .buy{font-size:13px!important;padding:6px 12px!important}
+.bigbuy.alt .buy:first-child{background:transparent;color:inherit;border-color:var(--line2)}
+.bigrows .bm-btns .buy{font-size:14px!important;padding:8px 14px!important}
+.bigrows{margin-bottom:12px}
+.an-recipe{display:grid;grid-template-columns:60px minmax(0,1fr);gap:14px;align-items:start}
+.an-bar{display:flex;height:16px;border-radius:3px;overflow:hidden;border:1px solid var(--line2);margin:2px 0 12px}
+.an-bar i{display:block;min-width:3px}
+.an-parts{list-style:none;margin:0;padding:0;font-size:15px}
+.an-parts li{display:flex;align-items:center;gap:8px;padding:3px 0;flex-wrap:wrap}
+.an-parts .dot,.bm-row .dot{width:14px;height:14px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.18)}
+.an-steps{margin:12px 0 0;padding-left:22px;font-size:15px}
+.an-steps li{margin:0 0 6px}
+.bm-rows{margin-top:14px}
+.bh{font-size:14px;font-weight:600;margin:0 0 4px}
+.an-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.an-guide{margin:18px 0 0;font-size:15px}
+.an-disc{font-size:12px;margin:14px 0 0;max-width:90ch}
+.doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:8px 0 36px}
+.doors a{display:flex;flex-direction:column;gap:6px;text-decoration:none;padding:18px 20px;border:1px solid var(--line2);border-radius:var(--r);background:var(--panel)}
+.doors a:hover{border-color:var(--ink)}
+.doors b{font-size:17px;font-weight:600}
+.doors span{font-size:14px;color:var(--ink2);line-height:1.45}
+.guides-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.guides-h h2{font-size:22px;font-weight:600;margin:0}
+.guides-h a{font-size:14px}
+.gl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px}
+.gl-grid a{display:flex;flex-direction:column;gap:6px;text-decoration:none;font-size:13.5px}
+.gl-grid i{display:block;aspect-ratio:2/1;border-radius:var(--r);border:1px solid rgba(0,0,0,.12)}
+.gl-grid a:hover i{outline:2px solid var(--ink);outline-offset:2px}
+.ask-how{font-size:13px;max-width:80ch;margin:28px 0 0}
+@media (max-width:820px){
+ .an-cols,.doors{grid-template-columns:minmax(0,1fr)}
+ .ask-row .btn{flex:1 1 100%}
+ .ask-row .search{font-size:16px}
+ .gl-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .an-sw{padding:18px}
+}
+@media (max-width:420px){.gl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <header class="top">
  <div class="bar">
-  <a class="mark" href="#studio" aria-label="Chromaraga home"><b>Chromaraga</b></a>
+  <a class="mark" href="#find" aria-label="Chromaraga home"><b>Chromaraga</b></a>
   <nav class="main" aria-label="Main">
-   <a href="#studio" data-g="studio">Studio</a><a href="#theory" data-g="learn">Learn</a><a href="#sound" data-g="explore">Explore</a><a href="#room" data-g="spaces">Rooms</a><a href="#paints" data-g="paints">Paints &amp; shop</a>
+   <a href="#find" data-g="find">Find a colour</a><a href="#studio" data-g="studio">Studio</a><a href="#theory" data-g="learn">Learn</a><a href="#sound" data-g="explore">Explore</a><a href="#room" data-g="spaces">Rooms</a><a href="#paints" data-g="paints">Paints &amp; shop</a>
   </nav>
   <div class="right">
    <a class="btn sm solid hdr-book" href="#consult" data-book="header">Get guidance</a>
@@ -489,6 +567,31 @@ body.stage-lock{overflow:hidden}
  <div class="sub" id="subnav"></div>
 </header>
 <main>
+
+<!-- ================= FIND (home) ================= -->
+<section class="view" id="v-find">
+ <div class="ask" id="askTop">
+  <h1>What colour do you want to paint?</h1>
+  <form class="ask-row" id="askForm" onsubmit="return false">
+   <input type="color" id="askPick" value="#9caf88" aria-label="Pick a colour">
+   <input id="askIn" class="search" autocomplete="off" enterkeyhint="go" placeholder="Sage green, navy, burnt sienna or #8a5a3c" aria-label="Colour name, paint name or hex code">
+   <button class="btn solid" id="askGo" type="submit">Show me how</button>
+  </form>
+  <div class="ask-opts">
+   <div class="ask-med"><span class="faint">I paint with</span><div class="seg" id="askMed" role="group" aria-label="Medium"><button data-m="acrylic">Acrylic</button><button data-m="oil">Oil</button><button data-m="watercolor">Watercolour</button><button data-m="gouache">Gouache</button></div></div>
+   <label class="ask-photo">Or match a colour from a photo<input type="file" id="askPhoto" accept="image/*" hidden></label>
+  </div>
+  <div class="ask-pop" id="askPop" aria-label="Popular colours"></div>
+ </div>
+ <div class="answer" id="answer" hidden aria-live="polite"></div>
+ <div class="doors" id="doors">
+  <a href="#studio"><b>Mix colours yourself</b><span>Paint with real pigments on a virtual canvas and see exactly what you mixed.</span></a>
+  <a href="#problems"><b>Fix a painting</b><span>Muddy colours, dull darks, chalky mixes, colours that changed as they dried.</span></a>
+  <a href="#room"><b>Choose colours for a room</b><span>Try wall colours in your room’s light before you buy a tin.</span></a>
+ </div>
+ <section class="guides" aria-labelledby="guidesH"><div class="guides-h"><h2 id="guidesH">How to mix</h2><a href="https://nabilrahman.github.io/chromaraga/mix/" target="_blank" rel="noopener">All colour guides</a></div><div class="gl-grid" id="guideGrid"></div></section>
+ <p class="ask-how faint">How it works: Chromaraga models how real pigments absorb and scatter light, the same physics paint chemists use, so the recipes match what happens on your palette, not on a screen. Screens and paint brands vary a little, so always test a dab first.</p>
+</section>
 
 <!-- ================= STUDIO ================= -->
 <section class="view" id="v-studio">
@@ -964,7 +1067,7 @@ body.stage-lock{overflow:hidden}
 </section>
 </main>
 <footer><span>© 2026 Nabil Rahman. All rights reserved. Chromaraga™ by Nabil Rahman. <a href="#consult" data-book="footer">Get guidance on colour</a>. Text, design, code and pigment data may not be copied or republished without permission.</span><span>Colour mixing is a physical model and an estimate: real results vary with paint, surface, climate, light and screen. Always test before use. Products are sold by independent retailers; some links earn us a commission. As an Amazon Associate I earn from qualifying purchases. <a href="#terms">Disclaimer and terms</a></span><span>Chromaraga is free to use. If it helps your painting, you can <a href="https://www.patreon.com/nabilrahman" target="_blank" rel="noopener">support it on Patreon</a> or give any amount once through <a href="https://www.paypal.com/donate/?business=R3T3W26389Z9L&amp;no_recurring=0&amp;item_name=Support+the+free+tools%2C+lessons+and+art+I+make%2C+like+Chromaraga.+Every+gift+helps+me+keep+creating+and+sharing+them.&amp;currency_code=USD" target="_blank" rel="noopener">PayPal</a>.</span></footer>
-<nav class="mobnav" aria-label="Mobile"><a href="#studio" data-g="studio">Studio</a><a href="#theory" data-g="learn">Learn</a><a href="#sound" data-g="explore">Explore</a><a href="#room" data-g="spaces">Rooms</a><a href="#paints" data-g="paints">Paints</a><a href="#consult" data-g="consult" data-book="mobnav">Guidance</a></nav>
+<nav class="mobnav" aria-label="Mobile"><a href="#find" data-g="find">Find</a><a href="#studio" data-g="studio">Studio</a><a href="#theory" data-g="learn">Learn</a><a href="#sound" data-g="explore">Explore</a><a href="#room" data-g="spaces">Rooms</a><a href="#paints" data-g="paints">Paints</a><a href="#consult" data-g="consult" data-book="mobnav">Guidance</a></nav>
 <div class="scrim" id="scrim"></div><aside class="drawer" id="drawer" aria-live="polite"></aside><div class="toast" id="toast" role="status"></div>
 <script>/*! Chromaraga © 2026 Nabil Rahman. All rights reserved. */
 /* ===== Spectral pigment engine (Kubelka–Munk) ===== */
@@ -1695,7 +1798,7 @@ const SURFACES = [
 /* ---------- Retail & affiliate (edit IDs here) ---------- */
 const AFFILIATE = {
  awinPublisherId: '3161583',     /* Nabil's Awin publisher ID */
- awinJoined: [],                /* advertiser IDs (awinmid) that have approved Nabil; links are only wrapped for these */
+ awinJoined: ['88183', '79310', '79140', '83745'], /* Blick (accepted 20 Nov 2026) and Jackson's US/UK/AU (welcomed 24 Nov 2026) */                /* advertiser IDs (awinmid) that have approved Nabil; links are only wrapped for these */
  amazon: { us:'', uk:'', de:'', fr:'', it:'', es:'', ca:'', au:'', in:'', jp:'' }, /* Associates tags per store, e.g. 'nabilrahman-20' */
  cjPid: ''                        /* optional CJ publisher ID */
 };
@@ -1849,6 +1952,140 @@ GLOSSARY.push(
  ['Co-primaries','A warm and a cool version of each primary (split primary palette).'],
  ['Local colour','An object\'s inherent colour, before light and atmosphere change it.']
 );
+
+;
+/* ---------- "How to mix [colour]" guides: shared by the in-app finder and the static guide pages ---------- */
+const GUIDE_FAMS = {
+ green: { n: 'Greens', tips: ['Yellow and blue make green. A cool, greenish yellow with phthalo blue gives the brightest greens; ultramarine, which leans violet, gives duller, olive-leaning greens.', 'To dull a green, add a little red or a brown. To darken it, add blue or a dark earth colour rather than black, which tends to make greens muddy.'] },
+ blue: { n: 'Blues', tips: ['Blues are strong, phthalo blue especially. Add the blue to the lighter colour in very small amounts, never the other way round.', 'Ultramarine leans violet and phthalo blue leans green. Start from the blue that already leans the way you need.'] },
+ purple: { n: 'Purples', tips: ['Mixed purples go dull when the red leans orange or the blue leans green. Use a blue that leans violet, such as ultramarine, with a red that leans blue, such as quinacridone magenta.', 'Mix the purple first, then add it to white a little at a time for lighter versions.'] },
+ pink: { n: 'Pinks', tips: ['Pinks are mostly white. Add the red to the white a little at a time, not the white to the red, or you will mix far more paint than you need.', 'A cool red such as quinacridone magenta gives a clean, rosy pink. An orange-leaning red gives a salmon pink.'] },
+ red: { n: 'Reds and oranges', tips: ['A bright red is hard to mix from other paints, so most painters buy one warm red and one cool red and shift between them.', 'To darken a red, add a touch of blue or a deep red such as alizarin crimson rather than black, which turns red brownish grey.'] },
+ orange: { n: 'Reds and oranges', tips: ['A warm yellow and a warm red make the cleanest oranges. A cool red such as magenta makes a duller, browner orange.', 'Earthy oranges like terracotta and rust are much easier starting from burnt sienna.'] },
+ yellow: { n: 'Yellows', tips: ['Yellow is weak and easy to dirty. Keep brushes clean and add small amounts of other colours to the yellow.', 'Darkening yellow with black turns it olive green. Use a touch of brown or violet instead.'] },
+ brown: { n: 'Browns', tips: ['Browns come from mixing complements: red and green, blue and orange, or all three primaries. Change the ratio to tilt a brown warmer or cooler.', 'Burnt sienna, burnt umber and raw umber are cheap, lightfast and save a lot of mixing.'] },
+ skin: { n: 'Skin tones', tips: ['Skin is never one colour. Mix a mid tone first, then a lighter and a darker version from it, and paint the light, middle and shadow areas with those.', 'Shift the undertone with a touch of red for rosier skin or yellow ochre for golden skin. Darken with burnt umber or a little ultramarine rather than black.'] },
+ neutral: { n: 'Greys, blacks and off-whites', tips: ['Greys mixed from complements, such as ultramarine and burnt sienna, look livelier than black and white, and you can tilt them warm or cool by changing the ratio.', 'Ivory black with white gives a slightly cool, bluish grey. Add a touch of burnt sienna or yellow ochre to warm it.'] }
+};
+const COLOUR_GUIDES = [
+ { s: 'olive-green', n: 'Olive green', hex: '#708238', fam: 'green', note: 'A dull yellow-green, the colour of olives and dry hillsides. Knock a yellow-green back with a little red or brown rather than adding black.' },
+ { s: 'sage-green', n: 'Sage green', hex: '#9CAF88', fam: 'green', note: 'A soft grey-green, popular for walls and botanical painting: a green lightened with white and softened with an earth colour or a touch of red, its complement.' },
+ { s: 'forest-green', n: 'Forest green', hex: '#355E3B', fam: 'green', note: 'A deep, cool green for shadowed foliage. Darken green with blue or a dark earth colour, not black.' },
+ { s: 'mint-green', n: 'Mint green', hex: '#A8D5BA', fam: 'green', note: 'A pale, cool green that is mostly white. Add the green to the white in small amounts.' },
+ { s: 'emerald-green', n: 'Emerald green', hex: '#1E7F5C', fam: 'green', note: 'A rich, slightly blue jewel green. Clean, strong pigments get closest; earth colours will dull it.' },
+ { s: 'teal', n: 'Teal', hex: '#2A7F80', fam: 'green', note: 'A deep blue-green midway between green and blue, darker and less bright than turquoise.' },
+ { s: 'turquoise', n: 'Turquoise', hex: '#33B3A6', fam: 'green', note: 'A bright, light blue-green named after the stone. It needs clean pigments: any red or brown in the mix will grey it.' },
+ { s: 'seafoam-green', n: 'Seafoam green', hex: '#8FD3C1', fam: 'green', note: 'A pale, soft blue-green, lighter and gentler than turquoise.' },
+ { s: 'navy-blue', n: 'Navy blue', hex: '#1D2A55', fam: 'blue', note: 'A very dark blue. Ultramarine darkened with a little of a warm colour, such as a red or burnt sienna, stays blue, where black can turn it grey.' },
+ { s: 'sky-blue', n: 'Sky blue', hex: '#8FBFE6', fam: 'blue', note: 'A light, clear blue. A real sky is lighter and slightly greener near the horizon, so mix two values.' },
+ { s: 'cobalt-blue', n: 'Cobalt blue', hex: '#2F55A4', fam: 'blue', note: 'A mid blue leaning neither green nor violet. Cobalt blue (PB28) is a real pigment, but it is expensive, so many painters mix a close match.' },
+ { s: 'indigo', n: 'Indigo', hex: '#33356F', fam: 'blue', note: 'A deep violet-blue named after the plant dye.' },
+ { s: 'periwinkle', n: 'Periwinkle', hex: '#8E9BD6', fam: 'blue', note: 'A light blue with a hint of violet, named after the flower.' },
+ { s: 'purple', n: 'Purple', hex: '#6B3F8F', fam: 'purple', note: 'Most disappointing purples come from the wrong red and blue. A violet-leaning blue and a blue-leaning red keep it clean.' },
+ { s: 'lavender', n: 'Lavender', hex: '#B9A7D6', fam: 'purple', note: 'A pale, slightly grey purple. Mix a violet first, then add it to white.' },
+ { s: 'lilac', n: 'Lilac', hex: '#C4A5CF', fam: 'purple', note: 'A pale purple leaning pink, warmer than lavender.' },
+ { s: 'plum', n: 'Plum', hex: '#6E3B5A', fam: 'purple', note: 'A deep red-purple, like the skin of a ripe plum.' },
+ { s: 'magenta', n: 'Magenta', hex: '#C0307D', fam: 'pink', note: 'A purplish pink-red that is hard to mix from other paints. A tube of quinacridone magenta (PR122) is the usual answer.' },
+ { s: 'pink', n: 'Pink', hex: '#E7A1B0', fam: 'pink', note: 'Red and white. A cool red gives a clean pink; a warm, orange-leaning red gives salmon.' },
+ { s: 'dusty-pink', n: 'Dusty pink', hex: '#D4A5A5', fam: 'pink', note: 'A muted, greyed pink. Grey a pink with a touch of green, its complement, or a little burnt umber.' },
+ { s: 'coral', n: 'Coral', hex: '#EF7E66', fam: 'pink', note: 'An orange-pink: a warm red, a little yellow and white.' },
+ { s: 'peach', n: 'Peach', hex: '#F4B89A', fam: 'orange', note: 'A pale orange: mostly white with orange and a touch of red.' },
+ { s: 'red', n: 'Red', hex: '#C23B2E', fam: 'red', note: 'A clear, mid red. This shows which tube gets closest and how to shift it warmer or cooler.' },
+ { s: 'burgundy', n: 'Burgundy', hex: '#7A2433', fam: 'red', note: 'A deep red with a touch of purple, like the wine. Darken a cool red with a little blue rather than black.' },
+ { s: 'maroon', n: 'Maroon', hex: '#6D1F2A', fam: 'red', note: 'A dark brownish red.' },
+ { s: 'brick-red', n: 'Brick red', hex: '#A33E2C', fam: 'red', note: 'A dull orange-red, the colour of fired clay bricks.' },
+ { s: 'terracotta', n: 'Terracotta', hex: '#C0643F', fam: 'orange', note: 'A warm, earthy orange-brown, the colour of unglazed clay pots.' },
+ { s: 'rust', n: 'Rust', hex: '#A4502B', fam: 'orange', note: 'A deep orange-brown like oxidised iron. Burnt sienna is close straight from the tube.' },
+ { s: 'burnt-orange', n: 'Burnt orange', hex: '#CC5500', fam: 'orange', note: 'A deep, slightly darkened orange.' },
+ { s: 'orange', n: 'Orange', hex: '#E2792B', fam: 'orange', note: 'A secondary colour: a warm yellow and a warm red.' },
+ { s: 'mustard-yellow', n: 'Mustard yellow', hex: '#D4A52A', fam: 'yellow', note: 'A dull, warm yellow. Yellow ochre gets close; a bright yellow greyed with a touch of violet or brown also works.' },
+ { s: 'ochre', n: 'Ochre', hex: '#C58B2A', fam: 'yellow', note: 'Yellow ochre (PY43) is a natural earth pigment and one of the oldest paints there is.' },
+ { s: 'lemon-yellow', n: 'Lemon yellow', hex: '#F2E14C', fam: 'yellow', note: 'A cool, slightly greenish yellow. A bright yellow cannot be mixed from other paints, so it starts from a tube.' },
+ { s: 'brown', n: 'Brown', hex: '#7A5235', fam: 'brown', note: 'A mid brown. Mixing complements gives brown, and the ratio decides whether it leans warm or cool.' },
+ { s: 'chocolate-brown', n: 'Chocolate brown', hex: '#4E3424', fam: 'brown', note: 'A dark, warm brown.' },
+ { s: 'tan', n: 'Tan', hex: '#C19A6B', fam: 'brown', note: 'A light, warm brown.' },
+ { s: 'khaki', n: 'Khaki', hex: '#B5A77A', fam: 'brown', note: 'A dull yellowish brown with a hint of green, the colour of the uniform cloth.' },
+ { s: 'beige', n: 'Beige', hex: '#D9C8A9', fam: 'neutral', note: 'A pale, warm greyish brown: mostly white with small amounts of yellow ochre and a brown.' },
+ { s: 'cream', n: 'Cream', hex: '#EFE4C8', fam: 'neutral', note: 'An off-white with a warm yellow cast.' },
+ { s: 'light-skin-tone', n: 'Light skin tone', hex: '#E8BFA0', fam: 'skin', note: 'A starting point for light skin. Adjust the undertone and value against your reference.' },
+ { s: 'medium-skin-tone', n: 'Medium skin tone', hex: '#C68C64', fam: 'skin', note: 'A starting point for medium skin. Adjust the undertone and value against your reference.' },
+ { s: 'deep-skin-tone', n: 'Deep skin tone', hex: '#7D4E33', fam: 'skin', note: 'A starting point for deep skin. Adjust the undertone and value against your reference.' },
+ { s: 'grey', n: 'Grey', hex: '#8D8D8A', fam: 'neutral', note: 'A mid grey. Greys mixed from complements are livelier than black and white.' },
+ { s: 'warm-grey', n: 'Warm grey', hex: '#8F877C', fam: 'neutral', note: 'A grey with a brownish warmth, useful for shadows in warm light.' },
+ { s: 'charcoal-grey', n: 'Charcoal grey', hex: '#36383A', fam: 'neutral', note: 'A very dark grey, just short of black.' },
+ { s: 'black', n: 'Black', hex: '#2B2A2A', fam: 'neutral', note: 'A mixed "chromatic black" from dark colours such as ultramarine and burnt umber is richer than black from the tube, and you can tilt it warm or cool.' }
+];
+const GUIDE_BY_SLUG = Object.fromEntries(COLOUR_GUIDES.map(g => [g.s, g]));
+const GUIDE_POPULAR = ['sage-green', 'olive-green', 'navy-blue', 'terracotta', 'dusty-pink', 'purple', 'medium-skin-tone', 'mustard-yellow', 'teal', 'brown'];
+const GUIDE_MEDIA = { acrylic: 'Acrylic', oil: 'Oil', watercolor: 'Watercolour', gouache: 'Gouache' };
+const GUIDE_SURF = { oil: '#f0ede6', acrylic: '#f0ede6', gouache: '#f6f2e9', watercolor: '#f6f2e9' };
+const WC_WASH = { 0.15: 'a strong mix with little water', 0.45: 'a medium wash', 0.75: 'a pale wash with plenty of water' };
+const GUIDE_MEDNOTE = {
+ acrylic: 'Acrylic dries a little darker than it looks wet, so let a test dab dry before you mix a large batch.',
+ oil: 'Mix with a palette knife rather than a brush: it keeps the colour clean and wastes less paint.',
+ watercolor: 'Watercolour dries lighter than it looks wet. Mix a little stronger than you want and test on a scrap of the same paper.',
+ gouache: 'Gouache can shift slightly as it dries, so test a dab and let it dry before mixing a large batch.'
+};
+function guideSlug(name) { return String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+function guideOpts(medium, dil) { return { medium, dilution: dil, dry: true, surfaceRGB: hexToRgb(GUIDE_SURF[medium] || '#f0ede6') }; }
+function guideDils(medium) { return medium === 'watercolor' ? [0.15, 0.45, 0.75] : [['softpastel', 'pencil'].includes(medium) ? 0.3 : 0]; }
+const guideQ = d => d < 2 ? 'Near-exact' : d < 5 ? 'Very close' : d < 9 ? 'Close' : d < 14 ? 'In the same family' : 'Far off';
+/* Finds three answers for one colour: a recipe from the given palette, the closest ready-made tube, and a better mix from any paints.
+   For watercolour it tries a strong mix, a medium wash and a pale wash and keeps the closest. */
+function guideFind(t, pal, buyable, medium, white) {
+  const trans = ['watercolor', 'ink', 'pencil'].includes(medium), dils = guideDils(medium);
+  /* transparent media get lighter with water, not white paint */
+  if (trans && white) { pal = pal.filter(p => p !== white); buyable = buyable.filter(p => p !== white); }
+  let best = null;
+  const run = (ps, tag) => { for (const dil of dils) { const o = guideOpts(medium, dil), r = solve(t, ps, o, 3).slice(0, 3); if (r[0] && (!best || r[0].d < best.res[0].d)) best = { res: r, dil, opts: o, tag }; } };
+  if (trans && white) {
+    /* painters mix watercolour from the same paints as an opaque mix, with water in place of white: try that set first so the recipe stays sensible */
+    const op = solve(t, pal.concat([white]), guideOpts('acrylic', 0), 3)[0];
+    const basis = op ? op.parts.map(x => x.p).filter(p => p !== white) : [];
+    if (basis.length) run(basis, 'basis');
+    const kept = best; best = null; run(pal, 'free');
+    if (kept && (!best || kept.res[0].d < best.res[0].d + 3 || kept.res[0].d < 6)) best = kept;
+  } else run(pal, 'free');
+  if (!best) return null;
+  const o = best.opts, F = { target: t, pal, medium, res: best.res, dil: best.dil, opts: o, tubes: [], any: [], gamut: null };
+  const scored = buyable.map(p => {
+    let rgb = appearance([{ p, w: 1 }], o).rgb, d = dE(rgb, t), dil = best.dil;
+    if (trans) dils.forEach(dl => { const r2 = appearance([{ p, w: 1 }], guideOpts(medium, dl)).rgb, d2 = dE(r2, t); if (d2 < d) { d = d2; rgb = r2; dil = dl; } });
+    let dt = d; if (!trans && white && p !== white) for (const w of [1, 4]) dt = Math.min(dt, dE(appearance([{ p, w: 1 }, { p: white, w }], o).rgb, t));
+    return { p, rgb, d, dt, dil };
+  });
+  const [, tC, tH] = oklch(t), hueOk = rgb => { if (tC < .04) return oklch(rgb)[1] < .035; const [, c, hh] = oklch(rgb); return c > tC * .45 && Math.abs(((hh - tH + 540) % 360) - 180) < 35; };
+  F.tubes = scored.filter(x => hueOk(x.rgb) && x.d < 8).sort((a, b) => a.d - b.d).slice(0, 2);
+  const cands = scored.slice().sort((a, b) => a.dt - b.dt).slice(0, 8).map(x => x.p);
+  if (!trans && white && !cands.includes(white)) cands.push(white);
+  const key = r => r.parts.map(x => x.p.id).sort().join('+'), mine = new Set(F.res.map(key)), bestMine = F.res[0].d;
+  F.any = solve(t, cands, o, 3).filter(r => !mine.has(key(r)) && r.d < bestMine - 1.5).slice(0, 1);
+  if (bestMine > 5) {
+    const have = new Set(pal.map(p => p.id)); let g = null;
+    scored.slice().sort((a, b) => a.dt - b.dt).map(x => x.p).filter(p => !have.has(p.id)).slice(0, 18).forEach(p => { const r2 = solve(t, pal.concat([p]), o, 2)[0]; if (r2 && (!g || r2.d < g.d)) g = { p, d: r2.d, r: r2 }; });
+    if (g && g.d < bestMine - 1.5) { F.gamut = g; F.any = F.any.filter(r => r.d < g.d - .5); }
+  }
+  return F;
+}
+const fracW = w => { const n = Math.floor(w), f = w - n; return f > .25 && f < .75 ? (n ? n + '½' : '½') : String(Math.round(w)); };
+function guideParts(parts) { const tot = parts.reduce((a, x) => a + x.w, 0); return parts.slice().sort((a, b) => b.w - a.w).map(x => ({ p: x.p, w: x.w, pct: Math.round(x.w / tot * 100) })); }
+/* plain-language steps for a recipe */
+const PROPER_PAINT = /^(French|Payne|Van |Naples|Prussian|Indian|Venetian|Mars |Alizarin)/;
+function paintLc(n) { return PROPER_PAINT.test(n) ? n : n.charAt(0).toLowerCase() + n.slice(1); }
+function guideSteps(parts, medium, dil) {
+  const ps = guideParts(parts), lc = paintLc, pw = w => fracW(w) + (w > 1.25 ? ' parts' : ' part');
+  const out = [];
+  if (ps.length === 1) out.push(`Use ${lc(ps[0].p.name)} straight from the tube${medium === 'watercolor' ? ' as ' + WC_WASH[dil] : ''}.`);
+  else {
+    out.push(`Put out ${pw(ps[0].w)} of ${lc(ps[0].p.name)}. A part is any equal measure: a pea-sized blob, a knife tip or a brushful.`);
+    ps.slice(1).forEach(x => out.push(`Add ${pw(x.w)} of ${lc(x.p.name)}${x.w <= 1 ? ', a little at a time' : ''}, and mix it in completely before you judge the colour.`));
+    if (medium === 'watercolor') out.push(`Thin the mix with water to ${WC_WASH[dil]}.`);
+  }
+  out.push(GUIDE_MEDNOTE[medium] || GUIDE_MEDNOTE.acrylic);
+  out.push('Put a dab next to your reference and squint: if it looks too light, too dark or too bright, adjust in small steps.');
+  return out;
+}
+function guideRelated(g, n) { const same = COLOUR_GUIDES.filter(x => x.fam === g.fam && x.s !== g.s); const i = COLOUR_GUIDES.indexOf(g); const near = [COLOUR_GUIDES[i - 1], COLOUR_GUIDES[i + 1]].filter(x => x && !same.includes(x) && x !== g); return same.concat(near).slice(0, n || 6); }
 
 ;
 /* ===== Pure HTML renderers (used at build time for SEO and at runtime) ===== */
@@ -2387,16 +2624,17 @@ function mergeById(a, b) { const m = new Map(); [...(a || []), ...(b || [])].for
 const uid = () => Math.random().toString(36).slice(2, 10);
 
 /* ---------- routing ---------- */
-const GROUPS = { about: ['terms', 'contact'], consult: ['consult'], studio: ['studio'], learn: ['theory', 'perception', 'course', 'mediums', 'problems', 'lessons', 'glossary'], explore: ['sound', 'culture', 'artists', 'light'], spaces: ['room', 'rooms', 'walls', 'lighting', 'styles'], paints: ['paints', 'shop'] };
-const TITLES = { terms: 'Disclaimer and terms', contact: 'Contact', consult: 'Get guidance', studio: 'Studio', theory: 'Theory', perception: 'Perception', mediums: 'Mediums', problems: 'Problems', lessons: 'Lessons', course: 'Course', glossary: 'Glossary', sound: 'Colour & sound', culture: 'Culture & spirit', artists: 'Artists', light: 'Light & mood', paints: 'Pigments', shop: 'My list', room: 'Room studio', rooms: 'Room guide', walls: 'Walls & paint', lighting: 'Lighting', styles: 'Styles' };
+const GROUPS = { find: ['find'], about: ['terms', 'contact'], consult: ['consult'], studio: ['studio'], learn: ['theory', 'perception', 'course', 'mediums', 'problems', 'lessons', 'glossary'], explore: ['sound', 'culture', 'artists', 'light'], spaces: ['room', 'rooms', 'walls', 'lighting', 'styles'], paints: ['paints', 'shop'] };
+const TITLES = { find: 'Find a colour', terms: 'Disclaimer and terms', contact: 'Contact', consult: 'Get guidance', studio: 'Studio', theory: 'Theory', perception: 'Perception', mediums: 'Mediums', problems: 'Problems', lessons: 'Lessons', course: 'Course', glossary: 'Glossary', sound: 'Colour & sound', culture: 'Culture & spirit', artists: 'Artists', light: 'Light & mood', paints: 'Pigments', shop: 'My list', room: 'Room studio', rooms: 'Room guide', walls: 'Walls & paint', lighting: 'Lighting', styles: 'Styles' };
 function route() {
-  let h = (location.hash || '#studio').slice(1); if (!TITLES[h]) h = 'studio';
+  const raw = (location.hash || '#find').slice(1).split('/'); let h = raw[0]; if (!TITLES[h]) h = 'find';
   const g = Object.keys(GROUPS).find(k => GROUPS[k].includes(h));
   $$('section.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + h));
   $$('nav.main a, .mobnav a').forEach(a => a.classList.toggle('on', a.dataset.g === g));
   const sub = $('#subnav'); sub.innerHTML = GROUPS[g].length > 1 ? GROUPS[g].map(k => `<a href="#${k}" class="${k === h ? 'on' : ''}">${TITLES[k]}</a>`).join('') : ''; sub.style.display = GROUPS[g].length > 1 ? '' : 'none';
-  document.title = (h === 'studio' ? BRAND_NAME + ': colour theory, paint mixing and pigment studio for artists' : TITLES[h] + ' · ' + BRAND_NAME);
-  trackView();
+  document.title = (h === 'find' ? BRAND_NAME + ': how to mix any paint colour, with the exact recipe' : h === 'studio' ? BRAND_NAME + ': colour theory, paint mixing and pigment studio for artists' : TITLES[h] + ' · ' + BRAND_NAME);
+  if (h === 'find') { if (raw[1]) askFromKey(decodeURIComponent(raw[1]), raw[2]); else { $('#answer').hidden = true; } }
+  trackView(); notifyParent();
   if (h === 'sound') startField(); else { stopField(); if ($('.soundstage.stage-max')) setStageFull(false); }
   if (h === 'light') drawScene();
   if (h === 'theory') drawWheel();
@@ -2406,8 +2644,10 @@ function route() {
   if (h === 'room') { syncRoomControls(); drawRoom(); }
   if (h === 'lighting') initCctStrip();
   if (h === 'course') renderBooks();
-  requestAnimationFrame(() => window.scrollTo(0, 0));
+  if (!(h === 'find' && raw[1])) requestAnimationFrame(() => window.scrollTo(0, 0));
 }
+/* tell the page that embeds Chromaraga which view is open, so its address can be shared */
+function notifyParent() { try { if (window.parent !== window) window.parent.postMessage({ type: 'chromaraga:route', hash: location.hash }, '*'); } catch (e) { } }
 
 /* ---------- named colours ---------- */
 const NAMES = [['Ivory', '#f2eee3'], ['Bone', '#e3dac9'], ['Linen', '#e9dfcf'], ['Sand', '#d8c3a0'], ['Wheat', '#e2c690'], ['Straw', '#e4cf7a'], ['Lemon', '#f2e33a'], ['Canary', '#f5dc35'], ['Marigold', '#eaa221'], ['Saffron', '#f0a12a'], ['Amber', '#e08a1e'], ['Tangerine', '#ee7a2a'], ['Apricot', '#f2a77e'], ['Peach', '#f2c0a0'], ['Coral', '#ef7d65'], ['Vermilion', '#d9442e'], ['Scarlet', '#d22b2b'], ['Crimson', '#a31d33'], ['Garnet', '#7a1f2b'], ['Oxblood', '#5a1a1c'], ['Rose', '#e58aa0'], ['Blush', '#efc2c4'], ['Magenta', '#c22a7d'], ['Fuchsia', '#d63a9a'], ['Plum', '#6d2c5a'], ['Aubergine', '#3a1f36'], ['Violet', '#5b3a9a'], ['Lavender', '#b5a6d8'], ['Lilac', '#c6a9d6'], ['Indigo', '#2b2f72'], ['Navy', '#1d2a55'], ['Ultramarine', '#2a3f9e'], ['Cobalt', '#2e5aa8'], ['Cornflower', '#6e8fd6'], ['Sky', '#8fbbe4'], ['Powder blue', '#bcd3ea'], ['Cerulean', '#2a86b8'], ['Teal', '#1f7a7a'], ['Turquoise', '#3ab3b0'], ['Aqua', '#8fd6cf'], ['Viridian', '#2a7a62'], ['Emerald', '#2a8a52'], ['Jade', '#4aa078'], ['Sage', '#9aab88'], ['Olive', '#6b6b2f'], ['Moss', '#5a6a32'], ['Leaf green', '#4f8a32'], ['Chartreuse', '#a8c832'], ['Forest', '#284a2c'], ['Ochre', '#c9913a'], ['Sienna', '#a0522d'], ['Rust', '#9c4a24'], ['Terracotta', '#c06a4a'], ['Umber', '#5b4130'], ['Chocolate', '#4a2e22'], ['Taupe', '#8f7f70'], ['Slate', '#5a6470'], ['Charcoal', '#33322f'], ['Graphite', '#4b4c4e'], ['Pewter', '#8f9397'], ['Dove grey', '#b9b7b0'], ['Pearl', '#e6e4de'], ['Ink black', '#16161a'], ['Warm grey', '#9d958a'], ['Cool grey', '#8e959c'], ['Khaki', '#a89a6a'], ['Mustard', '#c9a22a'], ['Burgundy', '#6e1e2e'], ['Salmon', '#ea8f7a'], ['Mint', '#a8dcc0'], ['Petrol', '#1f4a5a'], ['Denim', '#3a5a8a']];
@@ -2783,7 +3023,7 @@ function findExtra(F, opts) {
   }
 }
 function regionSelect() { return `<select class="sel regionPick" aria-label="Shopping from">${Object.entries(REGIONS).map(([k, v]) => `<option value="${k}" ${k === S.region ? 'selected' : ''}>${esc(v.n)}</option>`).join('')}</select>`; }
-function setRegion(k) { if (!REGIONS[k]) return; S.region = k; Store.mem.prefs.region = k; Store.save(); $$('.regionPick').forEach(x => x.value = k); if ($('#regionSel')) $('#regionSel').value = k; renderBuyMix(partsObj()); renderFind(); if ((location.hash || '') === '#shop') renderShop(); track('Region changed', { region: k }); }
+function setRegion(k) { if (!REGIONS[k]) return; S.region = k; Store.mem.prefs.region = k; Store.save(); $$('.regionPick').forEach(x => x.value = k); if ($('#regionSel')) $('#regionSel').value = k; renderBuyMix(partsObj()); renderFind(); if (H.rgb && !$('#answer').hidden) renderAnswer(); if ((location.hash || '') === '#shop') renderShop(); track('Region changed', { region: k }); }
 document.addEventListener('change', e => { if (e.target.classList && e.target.classList.contains('regionPick')) setRegion(e.target.value); });
 document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a[data-book]'); if (!a) return; track('Guidance click', { from: a.dataset.book, view: (location.hash || '#studio').slice(1) }); const sel = $('#csForm select[name=topic]'); if (sel && a.dataset.topic) [...sel.options].forEach(o => { if (o.text === a.dataset.topic) sel.value = o.value; }); }, true);
 function buyRow(p, src, mineSet) { const b = buyQueryFor(p); return `<div class="bm-row"><span class="dot" style="background:${p.hex}"></span><span class="bm-name"><b>${esc(p.name)}</b><span class="faint">${esc(p.code)}${b.brand ? ', ' + esc(b.brand) : ''}${mineSet && mineSet.has(p.id) ? ', already in your palette' : ''}</span></span><span class="bm-btns">${buyButtons(b.q, true, null, src)}</span></div>`; }
@@ -2839,10 +3079,78 @@ function parseColourInput(v) {
   return fromOklch(L, Math.max(0, C), (h + 360) % 360).map(x => Math.max(0, Math.min(1, x)));
 }
 function findColour(rgb, how) { setTarget(rgb); track('Find colour start', { how }); setTimeout(() => { const m = $('#matchPane'); if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60); }
+/* ---------- FIND A COLOUR (home): one question, then the tube to buy and the mix from 10 basic paints ---------- */
+const H = { medium: 'acrylic', rgb: null, key: '', guide: null, F: null, cache: new Map() };
+const GUIDE_URL = 'https://nabilrahman.github.io/chromaraga/mix/';
+const homeQ = p => p.name.replace(/[()]/g, ' ').replace(/\b(mix|genuine)\b/gi, '').replace(/\s+/g, ' ').trim() + ' ' + (SHORT_MED[H.medium] || 'paint');
+const fracTxt = w => fracW(w) + (w > 1.25 ? ' parts' : ' part');
+function inkOn(rgb) { const L = luminance(rgb); return (L + .05) / .05 > 1.05 / (L + .05) ? '#232323' : '#f3f3f2'; }
+function initHome() {
+  const pm = (Store.mem.prefs || {}).homeMed; if (GUIDE_MEDIA[pm]) H.medium = pm;
+  $$('#askMed button').forEach(b => b.classList.toggle('on', b.dataset.m === H.medium));
+  $('#askPop').innerHTML = GUIDE_POPULAR.map(k => { const g = GUIDE_BY_SLUG[k]; return `<a class="chip" href="#find/${g.s}"><span class="swatch-sm" style="background:${g.hex}"></span>${esc(g.n)}</a>`; }).join('');
+  $('#guideGrid').innerHTML = COLOUR_GUIDES.map(g => `<a href="#find/${g.s}" title="How to mix ${esc(g.n.toLowerCase())}"><i style="background:${g.hex}"></i><span>${esc(g.n)}</span></a>`).join('');
+  const go = () => { const v = $('#askIn').value.trim(); if (!v) return $('#askIn').focus(); const g = GUIDE_BY_SLUG[guideSlug(v)] || COLOUR_GUIDES.find(x => x.n.toLowerCase() === v.toLowerCase()); if (g) { location.hash = '#find/' + g.s; return; } const rgb = parseColourInput(v); if (!rgb) return toast('Try a colour name like sage green, a paint like burnt sienna, or a hex code like #8a5a3c'); track('Ask colour', { how: 'typed', text: v.slice(0, 40) }); location.hash = '#find/' + rgbToHex(rgb).slice(1); };
+  $('#askForm').onsubmit = e => { e.preventDefault(); go(); };
+  $('#askPick').onchange = e => { track('Ask colour', { how: 'picker' }); location.hash = '#find/' + e.target.value.slice(1); };
+  $('#askMed').onclick = e => { const b = e.target.closest('button'); if (!b) return; H.medium = b.dataset.m; Store.mem.prefs.homeMed = H.medium; Store.save(); $$('#askMed button').forEach(x => x.classList.toggle('on', x === b)); track('Ask medium', { medium: H.medium }); if (H.rgb) { history.replaceState(null, '', '#find/' + H.key + '/' + H.medium); notifyParent(); renderAnswer(); } };
+  $('#askPhoto').onchange = e => { const f = e.target.files[0]; if (!f) return; track('Ask colour', { how: 'photo' }); location.hash = '#studio'; setTimeout(() => { loadPhoto(f); $('#matchPane').scrollIntoView({ behavior: 'smooth', block: 'start' }); toast('Tap the photo where the colour is'); }, 120); };
+}
+function askFromKey(key, med) {
+  if (GUIDE_MEDIA[med] && med !== H.medium) { H.medium = med; $$('#askMed button').forEach(x => x.classList.toggle('on', x.dataset.m === med)); }
+  const g = GUIDE_BY_SLUG[key], rgb = g ? hexToRgb(g.hex) : /^[0-9a-f]{6}$/i.test(key) ? hexToRgb('#' + key) : parseColourInput(key.replace(/-/g, ' '));
+  if (!rgb) { $('#answer').hidden = true; return; }
+  H.rgb = rgb; H.key = g ? g.s : rgbToHex(rgb).slice(1); H.guide = g || null;
+  $('#askPick').value = rgbToHex(rgb); if (g) $('#askIn').value = g.n;
+  document.title = 'How to mix ' + (g ? g.n : nameOf(rgb)).toLowerCase() + ' · ' + BRAND_NAME;
+  renderAnswer(true);
+}
+function homeFind() {
+  const ck = H.key + '|' + H.medium; if (H.cache.has(ck)) return H.cache.get(ck);
+  const pal = PALETTES.core.ids.map(id => PB[id]).filter(Boolean), buyable = PIG.filter(p => p.fam !== 'Custom' && !(S.safe && p.tox));
+  const F = guideFind(H.rgb, pal, buyable, H.medium, PB.tiw); H.cache.set(ck, F); return F;
+}
+function homeRows(parts, src) { return guideParts(parts).map(x => `<div class="bm-row"><span class="dot" style="background:${x.p.hex}"></span><span class="bm-name"><b>${esc(x.p.name)}</b><span class="faint">${esc(x.p.code)}</span></span><span class="bm-btns">${buyButtons(homeQ(x.p), true, null, src)}</span></div>`).join(''); }
+function homeRecipe(F, parts) {
+  const ps = guideParts(parts), mix = rgbToHex(appearance(parts, F.opts).rgb), th = rgbToHex(F.target);
+  return `<div class="an-recipe"><span class="pair big"><i style="background:${th}"></i><i style="background:${mix}"></i></span><div><div class="an-bar" role="img" aria-label="${esc(ps.map(x => x.pct + '% ' + x.p.name).join(', '))}">${ps.map(x => `<i style="flex:${Math.max(x.pct, 2)};background:${x.p.hex}"></i>`).join('')}</div><ul class="an-parts">${ps.map(x => `<li><span class="dot" style="background:${x.p.hex}"></span><b>${fracTxt(x.w)}</b> ${esc(x.p.name)} <span class="faint">${x.pct}%</span></li>`).join('')}</ul></div></div>`;
+}
+function renderAnswer(scroll) {
+  const box = $('#answer'), rgb = H.rgb, g = H.guide, name = g ? g.n : nameOf(rgb), hex = rgbToHex(rgb).toUpperCase(), med = GUIDE_MEDIA[H.medium];
+  box.hidden = false;
+  box.innerHTML = `<div class="an-sw" style="background:${hex};color:${inkOn(rgb)}"><div><p>How to mix</p><h2>${esc(name)}</h2><p class="an-hex">${hex} in ${med.toLowerCase()}</p></div></div><p class="faint an-wait">Working out the mix…</p>`;
+  if (scroll) setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
+  setTimeout(() => {
+    if (H.rgb !== rgb) return;
+    const F = homeFind(); H.F = F; if (!F) return;
+    const top = F.res[0], parts = niceParts(top.parts), short = SHORT_MED[H.medium] || 'paint';
+    const wash = H.medium === 'watercolor' ? ` Thinned with water to ${WC_WASH[F.dil]}.` : '';
+    const tubes = F.tubes.map((x, i) => `<div class="an-tube${i ? ' alt' : ''}"><span class="pair big"><i style="background:${hex}"></i><i style="background:${rgbToHex(x.rgb)}"></i></span><div><p><b>${esc(x.p.name)}</b> <span class="faint">${esc(x.p.code)}</span></p><p class="faint an-q">${guideQ(x.d)} straight from the tube${H.medium === 'watercolor' ? ', as ' + WC_WASH[x.dil] : ''}.</p><div class="bigbuy${i ? ' alt' : ''}">${buyButtons(homeQ(x.p), false, null, 'home-tube')}</div><button class="btn sm" data-hadd="${x.p.id}">Add to my list</button></div></div>`).join('');
+    const left = F.tubes.length ? `<div class="an-col"><h3>Buy it ready-made</h3>${tubes}</div>`
+      : `<div class="an-col"><h3>Buy the paints for this mix</h3><p class="faint an-q">No single ${short} paint comes close to this colour, so mixing is the way to get it. You need these:</p><div class="bigrows">${homeRows(parts, 'home-mix')}</div><button class="btn sm" data-hlist="res">Add all to my list</button></div>`;
+    let extra = '';
+    if (F.gamut) { const gp = niceParts(F.gamut.r.parts); extra += `<div class="an-extra"><h4>Closer with one more tube</h4><p class="faint">Add <b>${esc(F.gamut.p.name)}</b> <span class="mono">(${esc(F.gamut.p.code)})</span> to get ${guideQ(F.gamut.d).toLowerCase()}.</p>${homeRecipe(F, gp)}<div class="bm-rows">${homeRows(gp, 'home-gamut')}</div></div>`; }
+    if (F.any.length) { const ap = niceParts(F.any[0].parts); extra += `<div class="an-extra"><h4>Even closer, from other paints</h4><p class="faint">${guideQ(F.any[0].d)} match. Buy only the tubes you don't already have.</p>${homeRecipe(F, ap)}<div class="bm-rows">${homeRows(ap, 'home-any')}</div></div>`; }
+    box.innerHTML = `<div class="an-sw" style="background:${hex};color:${inkOn(rgb)}"><div><p>How to mix</p><h2>${esc(name)}</h2><p class="an-hex">${hex} in ${med.toLowerCase()}</p></div><button class="btn sm an-share" id="anShare" type="button">Copy link</button></div>
+${g ? `<p class="an-note">${esc(g.note)}</p>` : ''}
+<div class="an-region"><span class="faint">Shopping from</span> ${regionSelect()}</div>
+<div class="an-cols">${left}
+<div class="an-col"><h3>Mix it from 10 basic paints</h3>${homeRecipe(F, parts)}<p class="an-q"><b>${guideQ(top.d)} match.</b>${wash}</p><ol class="an-steps">${guideSteps(parts, H.medium, F.dil).map(x => `<li>${esc(x)}</li>`).join('')}</ol>${F.tubes.length ? `<div class="bm-rows"><p class="bh">Buy these paints</p>${homeRows(parts, 'home-mix')}</div>` : ''}<div class="an-btns"><button class="btn solid" id="anStudio" type="button">Open in the studio</button>${F.tubes.length ? '<button class="btn" data-hlist="res" type="button">Add all to my list</button>' : ''}</div></div>
+</div>${extra}
+${g ? `<p class="an-guide"><a href="${GUIDE_URL}${g.s}/" target="_blank" rel="noopener">Full guide: how to mix ${esc(g.n.toLowerCase())} in acrylic, oil and watercolour, with tips</a></p>` : ''}
+<aside class="talk talk-sm"><div><b>Still can't get the colour you need?</b><p>Send Nabil a photo of your painting and your paints, and work out the mix together.</p></div><a class="btn solid" href="#consult" data-book="home" data-topic="Mixing a particular colour">Get guidance</a></aside>
+<p class="faint an-disc">Colours on screen are a guide: match the pigment code on the tube to be sure you have the same paint. ${DISCLOSE}</p>`;
+    $('#anShare').onclick = () => { copyText('https://nabilrahman.com/chromaraga#find/' + H.key + (H.medium !== 'acrylic' ? '/' + H.medium : '')); track('Share colour', { colour: H.key }); };
+    $('#anStudio').onclick = () => { if (GUIDE_MEDIA[H.medium] && S.medium !== H.medium) { $('#mediumSel').value = H.medium; S.medium = H.medium; } S.dil = F.dil; S.palette = 'core'; S.custom = null; renderPaletteSel(); renderPigList(); $('#dilS').value = Math.round(S.dil * 100); setParts(parts); location.hash = '#studio'; setTimeout(() => { setTarget(rgb); toast('Recipe loaded into the mixer'); }, 60); track('Open studio', { from: 'home', colour: H.key }); };
+    $$('#answer [data-hadd]').forEach(b => b.onclick = () => { addShopping(PB[b.dataset.hadd]); track('Add to list', { from: 'home-tube', paint: PB[b.dataset.hadd].code }); });
+    $$('#answer [data-hlist]').forEach(b => b.onclick = () => { addMany(parts.map(x => x.p)); track('Add to list', { from: 'home-mix', n: parts.length }); });
+    track('Ask answer', { colour: H.key, medium: H.medium, mix: +top.d.toFixed(1), tube: F.tubes[0] ? +F.tubes[0].d.toFixed(1) : null });
+  }, 40);
+}
 /* analytics: counts visits and clicks when an Umami website ID is set in CONFIG; does nothing otherwise */
 function track(name, data) { try { if (window.umami && typeof umami.track === 'function') umami.track(name, data); } catch (e) { } }
 function loadAnalytics() { if (!CONFIG.umamiId || document.getElementById('umamiJs')) return; const sc = document.createElement('script'); sc.id = 'umamiJs'; sc.defer = true; sc.src = 'https://cloud.umami.is/script.js'; sc.dataset.websiteId = CONFIG.umamiId; sc.dataset.autoTrack = 'false'; sc.onload = () => trackView(); document.head.appendChild(sc); }
-function trackView() { try { if (window.umami) umami.track(props => Object.assign({}, props, { url: '/chromaraga/' + ((location.hash || '#studio').slice(1)), title: document.title })); } catch (e) { } }
+function trackView() { try { if (window.umami) umami.track(props => Object.assign({}, props, { url: '/chromaraga/' + ((location.hash || '#find').slice(1)), title: document.title })); } catch (e) { } }
 function extractPalette() {
   const d = photo.data.data, pts = []; for (let i = 0; i < d.length; i += 4 * 37) pts.push(rgbToOklab([d[i] / 255, d[i + 1] / 255, d[i + 2] / 255]));
   let cs = []; for (let k = 0; k < 6; k++) cs.push(pts[Math.floor(k / 6 * pts.length + pts.length / 12)]);
@@ -3495,7 +3803,7 @@ function init() {
   $('#glossSearch').oninput = e => { const q = e.target.value.toLowerCase(); $$('#glossList [data-term]').forEach(c => c.style.display = c.textContent.toLowerCase().includes(q) ? '' : 'none'); };
   $('#paintSearch').oninput = filterPaints; $('#famChips').onclick = e => { const b = e.target.closest('[data-fam]'); if (!b || b.tagName !== 'BUTTON') return; $$('#famChips .chip').forEach(c => c.classList.toggle('on', c === b)); filterPaints(); };
   $('#lessonChips').onclick = e => { const b = e.target.closest('[data-lv]'); if (!b) return; $$('#lessonChips .chip').forEach(c => c.classList.toggle('on', c === b)); $$('#lessonGrid .card').forEach(c => c.style.display = !b.dataset.lv || c.dataset.lvl === b.dataset.lv ? '' : 'none'); };
-  initKitForm(); initRoom(); initContact(); initConsult(); loadAnalytics();
+  initKitForm(); initRoom(); initContact(); initConsult(); initHome(); loadAnalytics();
   $('#regionSel').onchange = e => setRegion(e.target.value);
 
   /* embed build ships empty containers: render content at runtime */
